@@ -7,6 +7,8 @@ TRUEWIRE_REPO="${TRUEWIRE_REPO:-../truewire}"
 for name in github kraken; do
   rm -rf "specs/$name/spec"
   cp -r "$TRUEWIRE_REPO/examples/$name/spec" "specs/$name/spec"
-  cp "$TRUEWIRE_REPO/examples/$name/truewire.toml" "specs/$name/truewire.toml"
+  # Keep [project], [spec] and [cores.*]; the [python] sections belong to the source project.
+  awk '/^\[python/{skip=1} /^\[/{if($0 !~ /^\[python/) skip=0} !skip' "$TRUEWIRE_REPO/examples/$name/truewire.toml" \
+    | sed -e :a -e '/^\n*$/{$d;N;ba' -e '}' > "specs/$name/truewire.toml"
   find "specs/$name" -name __pycache__ -prune -exec rm -rf {} +
 done

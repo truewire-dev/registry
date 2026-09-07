@@ -1,0 +1,8 @@
+[project]
+name = "github"
+
+[spec]
+dir = "spec"
+
+[cores.default]
+meta = { type = "object", properties = { public = { type = "boolean" } }, additionalProperties = false }

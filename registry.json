@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "specs": {
+    "github": {
+      "description": "GitHub REST API, repository-scoped: repositories, commits, tags, releases, issues.",
+      "upstream": "https://docs.github.com/en/rest",
+      "transports": [
+        "http"
+      ],
+      "source": "https://github.com/truewire-dev/truewire/tree/main/examples/github",
+      "license": "CC0-1.0",
+      "endpoints": 6,
+      "endpoints_with_examples": 6,
+      "path": "specs/github"
+    },
+    "kraken": {
+      "description": "Kraken Spot: REST, WebSocket v2 streams and WebSocket trading RPC.",
+      "upstream": "https://docs.kraken.com/api-reference/",
+      "transports": [
+        "http",
+        "ws"
+      ],
+      "source": "https://github.com/truewire-dev/truewire/tree/main/examples/kraken",
+      "license": "CC0-1.0",
+      "endpoints": 75,
+      "endpoints_with_examples": 62,
+      "path": "specs/kraken"
+    }
+  }
+}

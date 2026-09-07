@@ -1,0 +1,10 @@
+[project]
+name = "kraken"
+
+[cores.spot]
+# `signed` genuinely varies across spot's own 58 endpoints (46 signed, 12 public) --
+# design §2/§6. `socket` (streams.market_data, streams.private, trading_ws -- 17
+# endpoints, all meta: {}) carries no schema: `SocketEndpoint` reads nothing from
+# `meta` at all -- the private/public split there is a connection-level fact
+# (`[python.cores]` `children` routing), not a per-call one.
+meta = { type = "object", properties = { signed = { type = "boolean" } }, additionalProperties = false }

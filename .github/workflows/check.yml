@@ -1,0 +1,26 @@
+name: Check specs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+      - name: Install truewire
+        run: |
+          uv venv --python 3.12 .venv
+          uv pip install --python .venv/bin/python truewire
+      - name: Index matches the tree
+        run: .venv/bin/python scripts/check_index.py
+      - name: Check every spec
+        run: |
+          for spec in specs/*/; do
+            echo "== $spec"
+            .venv/bin/truewire check --project "$spec"
+            .venv/bin/truewire examples --require-verified --project "$spec"
+          done

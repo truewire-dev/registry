@@ -63,10 +63,6 @@
       ]
     }
   },
-  "unverified": {
-    "reason": "not_captured",
-    "detail": "Written from the Hacker News API documentation and the live endpoint's own shape, with no recording committed yet. The Record workflow replays `examples/*.request.json` through a client generated from this spec and fills in the responses."
-  },
   "notes": [
     "An unknown username answers `null` with HTTP 200, the same way an unknown item id does.",
     "`submitted` is the whole history in one array, with no paging of any kind: an active account's profile is a large response, and there is no parameter that makes it smaller."

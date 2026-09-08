@@ -105,10 +105,6 @@
   "redacted": [
     "apikey"
   ],
-  "unverified": {
-    "reason": "not_captured",
-    "detail": "No recording yet: the sandbox this spec was written in cannot reach open-meteo.com. The `record.yml` workflow replays `examples/*.request.json` through the generated client with `truewire capture` and opens a pull request with the responses."
-  },
   "notes": [
     "The response schema is a subset: it names the fields every response carries and types the series maps. Fields not named here pass through unchecked.",
     "`hourly`, `daily` and `current` are keyed by whichever variables the request asked for, so they are typed as maps rather than records with a fixed field per variable: every value is one column (or one value, for `current`) under the variable name the request used. The `time` column is always there but a map cannot declare one key required.",

@@ -4,7 +4,7 @@ USGS earthquake data: the real-time GeoJSON summary feeds, and the FDSN event se
 querying the ANSS Comprehensive Catalog. Public, no key.
 
 - Upstream docs: https://earthquake.usgs.gov/fdsnws/event/1/
-- Endpoints: 3 (0 with recorded examples)
+- Endpoints: 3 (3 with recorded examples)
 - Source project (core, generated client, tests): authored in this repository; there is no
   separate project behind it
 - License: CC0-1.0 (spec files and recorded examples)
@@ -36,11 +36,12 @@ Use it: `truewire import registry usgs-earthquakes` inside a Truewire project, o
 
 ## Recordings
 
-Every endpoint carries request halves with real, reproducible parameters -- a week of the
-2024 Noto Peninsula sequence, a month around Grindavik -- and declares `unverified` with
-reason `not_captured` until a run of the
-[Record workflow](../../.github/workflows/record.yml) fills in the responses.
+Every endpoint carries request halves with real parameters -- a week of the 2024 Noto
+Peninsula sequence, a month around Grindavik -- and the response the service sent when they
+were replayed through a client generated from this spec, by the
+[Record workflow](../../.github/workflows/record.yml).
 
-The two summary-feed examples are the exception to "reproducible": a feed regenerates every
-minute, so re-recording `significant_week` records a different week. That is the endpoint,
-not a defect in the example.
+The catalogue queries are reproducible: the same window and magnitude return the same
+events, give or take a later revision of one. The two summary feeds are not, and are not
+meant to be: a feed regenerates every minute, so re-recording `significant_week` records a
+different week. That is the endpoint, not a defect in the example.

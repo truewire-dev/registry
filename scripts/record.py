@@ -164,7 +164,12 @@ def record_spec(name: str, entry: dict, keep: Path | None, pause: float) -> int:
 
 
 def refresh_index(names: list[str]) -> None:
-  """Bring `registry.json`'s counts and `README.md`'s table back in step with the tree."""
+  """Bring the counts in `registry.json` and both README levels back in step with the tree.
+
+  Everything here is derived, so a recording run leaves nothing for a human to remember to
+  update: `scripts/check_index.py` compares all three against the tree and fails on a
+  disagreement, which is what a forgotten count would be.
+  """
   sys.path.insert(0, str(ROOT / 'scripts'))
   from check_index import survey
 
@@ -180,6 +185,14 @@ def refresh_index(names: list[str]) -> None:
       f'| {", ".join(entry["transports"])} | {entry["status"]} |'
     )
     readme = re.sub(rf'^\| `{re.escape(name)}` \|.*$', row, readme, count=1, flags=re.M)
+    # The spec's own README states the same two numbers in prose, on one fixed line.
+    spec_readme = ROOT / entry['path'] / 'README.md'
+    if spec_readme.is_file():
+      spec_readme.write_text(re.sub(
+        r'^- Endpoints: \d+ \(\d+ with recorded examples\)$',
+        f'- Endpoints: {entry["endpoints"]} ({entry["endpoints_with_examples"]} with recorded examples)',
+        spec_readme.read_text(), count=1, flags=re.M,
+      ))
   index_file.write_text(json.dumps(index, indent=2) + '\n')
   readme_file.write_text(readme)
 

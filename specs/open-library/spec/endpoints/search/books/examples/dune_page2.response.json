@@ -1,0 +1,32 @@
+{
+  "status": 200,
+  "payload": {
+    "numFound": 118,
+    "start": 2,
+    "numFoundExact": true,
+    "num_found": 118,
+    "documentation_url": "https://openlibrary.org/dev/docs/api/search",
+    "q": "dune frank herbert",
+    "offset": null,
+    "docs": [
+      {
+        "author_name": [
+          "Frank Herbert"
+        ],
+        "edition_count": 77,
+        "first_publish_year": 1976,
+        "key": "/works/OL893516W",
+        "title": "Children of Dune"
+      },
+      {
+        "author_name": [
+          "Frank Herbert"
+        ],
+        "edition_count": 47,
+        "first_publish_year": 1981,
+        "key": "/works/OL893515W",
+        "title": "God Emperor of Dune"
+      }
+    ]
+  }
+}

@@ -42,10 +42,6 @@
       }
     }
   },
-  "unverified": {
-    "reason": "not_captured",
-    "detail": "Written from the Hacker News API documentation and the live endpoint's own shape, with no recording committed yet. The Record workflow replays `examples/*.request.json` through a client generated from this spec and fills in the responses."
-  },
   "notes": [
     "Six documented endpoints, one operation: the six paths differ only by the file name, and every one answers the same array of ids. So `feed` is a request parameter substituted into the path, and the six names are its `enum`, rather than six near-identical endpoint directories.",
     "The response is a bare array, not an object wrapping one. There is nothing to unwrap and no envelope to declare; the generated method returns the list itself."

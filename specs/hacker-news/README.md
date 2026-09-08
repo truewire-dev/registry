@@ -4,7 +4,7 @@ The Hacker News API: items, users, the ranked story lists behind the site's own 
 the live-update feed. Public, unauthenticated, read-only, no key.
 
 - Upstream docs: https://github.com/HackerNews/API
-- Endpoints: 5 (0 with recorded examples)
+- Endpoints: 5 (5 with recorded examples)
 - Source project (core, generated client, tests): authored in this repository; there is no
   separate project behind it
 - License: CC0-1.0 (spec files and recorded examples)
@@ -38,8 +38,9 @@ for the core a caller writes, not something the spec can make for them.
 
 ## Recordings
 
-Every endpoint carries request halves and declares `unverified` with reason `not_captured`
-until a run of the [Record workflow](../../.github/workflows/record.yml) fills in the
-responses. The item and user examples are permanent ids and re-record identically; the
-story lists, the max item id and the update feed are live and re-record differently every
-time.
+Every endpoint carries a request half and the response the API sent when it was replayed
+through a client generated from this spec, by the
+[Record workflow](../../.github/workflows/record.yml). The item and user examples name
+permanent ids and re-record almost identically -- a score moves, a comment appears. The
+story lists, the max item id and the update feed are live, and re-record completely
+differently every time.

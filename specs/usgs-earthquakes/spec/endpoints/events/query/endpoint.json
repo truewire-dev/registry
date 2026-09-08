@@ -122,10 +122,6 @@
       "description": "The matching earthquakes."
     }
   },
-  "unverified": {
-    "reason": "not_captured",
-    "detail": "Written from the FDSN event service documentation and the live service's own shape, with no recording committed yet. The Record workflow replays `examples/*.request.json` through a client generated from this spec and fills in the responses."
-  },
   "notes": [
     "This endpoint paginates, and no `pagination` block is declared, on purpose (authoring rule 8's \"omission is not a lie the checker can catch\"). Two facts block every strategy the format can state: `offset` counts from 1, and an `offset` walk starts at 0 with no way to say otherwise; and `metadata.count` is replaced by `limit`/`offset` the moment `limit` is sent, so a `total` terminator would raise on a walk's every page. `short_page` on `limit` alone would be declarable, and would also be the only thing the block said, so it is left out rather than half-stated. Do not \"complete\" this block without re-probing both facts.",
     "`format` is required rather than defaulted: without it the service answers QuakeML, an XML document, and a client that validates JSON would fail on the first call rather than on the spec.",

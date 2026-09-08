@@ -168,10 +168,6 @@
   "redacted": [
     "apikey"
   ],
-  "unverified": {
-    "reason": "not_captured",
-    "detail": "No recording yet: the sandbox this spec was written in cannot reach open-meteo.com. The `record.yml` workflow replays `examples/*.request.json` through the generated client with `truewire capture` and opens a pull request with the responses."
-  },
   "notes": [
     "The `format` enum lists only `json`: the API also answers `protobuf`, which a JSON-validating client cannot represent, so the value is left out rather than typed as accepted and then rejected at validation.",
     "Administrative fields and `country_code` are optional: the index has places, oceans among them, without them.",

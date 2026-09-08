@@ -123,6 +123,17 @@ def main() -> int:
         'recording run would fix them, but the spec is not recordable'
       )
 
+  for name, entry in index['specs'].items():
+    # Each spec's own README states the same two counts in one fixed line; a recording run
+    # rewrites it, and a hand edit that forgets to fails here rather than misleading a reader.
+    spec_readme = ROOT / 'specs' / name / 'README.md'
+    if not spec_readme.is_file():
+      problems.append(f'{name}: no specs/{name}/README.md')
+      continue
+    line = f'- Endpoints: {entry["endpoints"]} ({entry["endpoints_with_examples"]} with recorded examples)'
+    if line not in spec_readme.read_text():
+      problems.append(f'specs/{name}/README.md: does not carry the line {line!r}')
+
   readme = (ROOT / 'README.md').read_text()
   for name, entry in index['specs'].items():
     row = re.search(rf'^\| `{re.escape(name)}` \| (\d+) \| (\d+) \| ([^|]+) \| ([^|]+) \|', readme, re.M)

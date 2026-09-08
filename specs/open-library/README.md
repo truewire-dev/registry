@@ -4,7 +4,7 @@ Open Library, the Internet Archive's open catalogue of books: search over works,
 work and author records behind the results. Read access is public and needs no key.
 
 - Upstream docs: https://openlibrary.org/developers/api
-- Endpoints: 3 (0 with recorded examples)
+- Endpoints: 3 (3 with recorded examples)
 - Source project (core, generated client, tests): authored in this repository; there is no
   separate project behind it
 - License: CC0-1.0 (spec files and recorded examples)
@@ -37,9 +37,9 @@ and the `[cores]` section of `truewire.toml` by hand. The examples replay throug
 
 ## Recordings
 
-Every endpoint carries request halves -- a two-page search walk with `page` sent explicitly
+Every endpoint carries a request half -- a two-page search walk with `page` sent explicitly
 on both, one work whose description is a string and one whose description is a typed value
--- and declares `unverified` with reason `not_captured` until a run of the
-[Record workflow](../../.github/workflows/record.yml) fills in the responses. Every example
-names a permanent key, so re-recording changes the catalogue's contents but not which
-records come back.
+-- and the response Open Library sent when it was replayed through a client generated from
+this spec, by the [Record workflow](../../.github/workflows/record.yml). Every example names
+a permanent key, so re-recording changes what the catalogue holds, not which records come
+back: the string-versus-typed-value pair keeps testing both halves of that union.

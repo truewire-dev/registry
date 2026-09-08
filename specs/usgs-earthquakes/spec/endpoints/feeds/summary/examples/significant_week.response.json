@@ -1,0 +1,144 @@
+{
+  "status": 200,
+  "payload": {
+    "type": "FeatureCollection",
+    "metadata": {
+      "generated": 1788889794000,
+      "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson",
+      "title": "USGS Significant Earthquakes, Past Week",
+      "status": 200,
+      "api": "2.7.0",
+      "count": 3
+    },
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "mag": 3.73,
+          "place": "20 km E of Castle Rock, Washington",
+          "time": 1788606568280,
+          "updated": 1788883497930,
+          "tz": null,
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714095342",
+          "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/uw714095342.geojson",
+          "felt": 1022,
+          "cdi": 4.3,
+          "mmi": 3.72,
+          "alert": null,
+          "status": "reviewed",
+          "tsunami": 0,
+          "sig": 644,
+          "net": "uw",
+          "code": "714095342",
+          "ids": ",ew1788606570,uw714095342,us7000teiz,",
+          "sources": ",ew,uw,us,",
+          "types": ",dyfi,moment-tensor,origin,phase-data,shake-alert,shakemap,",
+          "nst": 103,
+          "dmin": 0.07935,
+          "rms": 0.09,
+          "gap": 23,
+          "magType": "ml",
+          "type": "earthquake",
+          "title": "M 3.7 - 20 km E of Castle Rock, Washington"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -122.643833333333,
+            46.247,
+            17.62
+          ]
+        },
+        "id": "uw714095342"
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "mag": 5.4,
+          "place": "21 km WNW of Jiangyou, China",
+          "time": 1788435581981,
+          "updated": 1788522392144,
+          "tz": null,
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tdw6",
+          "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us7000tdw6.geojson",
+          "felt": 6,
+          "cdi": 3.1,
+          "mmi": 5.884,
+          "alert": "yellow",
+          "status": "reviewed",
+          "tsunami": 0,
+          "sig": 652,
+          "net": "us",
+          "code": "7000tdw6",
+          "ids": ",us7000tdw6,",
+          "sources": ",us,",
+          "types": ",dyfi,ground-failure,losspager,origin,phase-data,shakemap,",
+          "nst": 89,
+          "dmin": 4.155,
+          "rms": 0.81,
+          "gap": 26,
+          "magType": "mb",
+          "type": "earthquake",
+          "title": "M 5.4 - 21 km WNW of Jiangyou, China"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            104.5066,
+            31.8458,
+            10
+          ]
+        },
+        "id": "us7000tdw6"
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "mag": 6.3,
+          "place": "84 km SSW of Nikolski, Alaska",
+          "time": 1788434244056,
+          "updated": 1788866857119,
+          "tz": null,
+          "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tdvt",
+          "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us7000tdvt.geojson",
+          "felt": 3,
+          "cdi": 5,
+          "mmi": 3.846,
+          "alert": "green",
+          "status": "reviewed",
+          "tsunami": 1,
+          "sig": 612,
+          "net": "us",
+          "code": "7000tdvt",
+          "ids": ",attkscoz,aka2026rljynh,us7000tdvt,",
+          "sources": ",at,ak,us,",
+          "types": ",dyfi,event-sequence,ground-failure,impact-link,losspager,moment-tensor,oaf,origin,phase-data,shakemap,",
+          "nst": 136,
+          "dmin": 0.563,
+          "rms": 1.28,
+          "gap": 59,
+          "magType": "mww",
+          "type": "earthquake",
+          "title": "M 6.3 - 84 km SSW of Nikolski, Alaska"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -169.4088,
+            52.2579,
+            35
+          ]
+        },
+        "id": "us7000tdvt"
+      }
+    ],
+    "bbox": [
+      -169.4088,
+      31.8458,
+      10,
+      104.5066,
+      52.2579,
+      35
+    ]
+  }
+}

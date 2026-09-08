@@ -68,10 +68,6 @@
   "redacted": [
     "apikey"
   ],
-  "unverified": {
-    "reason": "not_captured",
-    "detail": "No recording yet: the sandbox this spec was written in cannot reach open-meteo.com. The `record.yml` workflow replays `examples/*.request.json` through the generated client with `truewire capture` and opens a pull request with the responses."
-  },
   "notes": [
     "Lists are sent as repeated query keys (`latitude=52.52&latitude=48.85`), the form the official Open-Meteo clients use; the documentation shows the comma-separated form, which the API accepts as well.",
     "`apikey` is redacted because the transport adds it to the query on the commercial tier; the free tier sends none."

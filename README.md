@@ -43,11 +43,11 @@ repository and the spec is the whole of it.
 | Name | Endpoints | Recorded | Transports | Status |
 | --- | --- | --- | --- | --- |
 | `github` | 6 | 6 | http | recorded |
-| `hacker-news` | 5 | 0 | http | unrecorded |
+| `hacker-news` | 5 | 5 | http | recorded |
 | `kraken` | 75 | 62 | http, ws | partial |
-| `open-library` | 3 | 0 | http | unrecorded |
-| `open-meteo` | 7 | 0 | http | unrecorded |
-| `usgs-earthquakes` | 3 | 0 | http | unrecorded |
+| `open-library` | 3 | 3 | http | recorded |
+| `open-meteo` | 7 | 7 | http | recorded |
+| `usgs-earthquakes` | 3 | 3 | http | recorded |
 
 (`registry.json` is the source of truth; CI fails if this table's numbers drift from it.)
 

@@ -4,7 +4,7 @@ Open-Meteo: weather forecasts, historical weather (ERA5), air quality, marine an
 forecasts, geocoding and elevation. Free for non-commercial use, no key.
 
 - Upstream docs: https://open-meteo.com/en/docs
-- Endpoints: 7 (0 with recorded examples)
+- Endpoints: 7 (7 with recorded examples)
 - Source project (core, generated client, tests): https://github.com/truewire-dev/open-meteo
 - License: CC0-1.0 (spec files and recorded examples)
 
@@ -31,12 +31,15 @@ query parameter, which every endpoint declares `redacted`. Nothing here needs it
 
 ## Recordings
 
-Every endpoint carries the request half of at least one example: real coordinates, a real
-date range, the exact parameters a recording run replays. No endpoint has a response half
-yet, so all seven declare `unverified` with reason `not_captured`. The
-[Record workflow](../../.github/workflows/record.yml) generates a throwaway client from this
-spec, replays those requests through it with `truewire capture` and opens a pull request with
-the responses.
+Every endpoint carries the request half of at least one example -- real coordinates, a real
+date range -- and the response the free hosts sent when those parameters were replayed
+through a client generated from this spec. The
+[Record workflow](../../.github/workflows/record.yml) is what replays them: it builds that
+client, records with `truewire capture` and opens a pull request with what came back.
+
+A forecast is a forecast, so re-recording moves every number. What it must not move is the
+*shape*: `truewire check` replays each recording against its endpoint's response schema, so
+a re-record is also a test that this spec still describes what Open-Meteo sends.
 
 ## What it shows
 

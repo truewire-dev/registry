@@ -1,0 +1,5 @@
+{
+  "description": "River discharge forecasts from GloFAS, served from `flood-api.open-meteo.com`.",
+  "upstream": "https://open-meteo.com/en/docs/flood-api",
+  "core": "default"
+}

@@ -1,0 +1,16 @@
+{
+  "description": "One day of waves in the German Bight, hourly and the daily maximum",
+  "request": {
+    "latitude": 54.5,
+    "longitude": 7.5,
+    "hourly": [
+      "wave_height",
+      "wave_direction"
+    ],
+    "daily": [
+      "wave_height_max"
+    ],
+    "timezone": "Europe/Berlin",
+    "forecast_days": 1
+  }
+}

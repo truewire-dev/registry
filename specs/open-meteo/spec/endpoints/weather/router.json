@@ -1,0 +1,5 @@
+{
+  "description": "Weather forecasts and elevation lookups, served from `api.open-meteo.com`.",
+  "upstream": "https://open-meteo.com/en/docs",
+  "core": "default"
+}

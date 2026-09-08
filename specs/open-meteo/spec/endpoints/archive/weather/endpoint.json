@@ -1,0 +1,147 @@
+{
+  "docs": "https://open-meteo.com/en/docs/historical-weather-api",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/v1/archive",
+    "method": "GET",
+    "description": "Historical weather for one location and date range from reanalysis models, ERA5 by default, hourly and daily, back to 1940.",
+    "request": {
+      "title": "ArchiveRequest",
+      "type": "object",
+      "description": "Archive parameters.",
+      "properties": {
+        "latitude": {
+          "type": "number",
+          "description": "WGS84 latitude of the location, in degrees.",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "longitude": {
+          "type": "number",
+          "description": "WGS84 longitude of the location, in degrees.",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date",
+          "description": "First day of the range, inclusive."
+        },
+        "end_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Last day of the range, inclusive."
+        },
+        "hourly": {
+          "type": "array",
+          "description": "Hourly variables to return, such as `temperature_2m`.",
+          "items": {
+            "type": "string",
+            "description": "One variable name."
+          }
+        },
+        "daily": {
+          "type": "array",
+          "description": "Daily aggregates to return, such as `precipitation_sum`; they need a `timezone`.",
+          "items": {
+            "type": "string",
+            "description": "One variable name."
+          }
+        },
+        "temperature_unit": {
+          "type": "string",
+          "description": "Unit for every temperature variable.",
+          "enum": [
+            "celsius",
+            "fahrenheit"
+          ],
+          "default": "celsius"
+        },
+        "wind_speed_unit": {
+          "type": "string",
+          "description": "Unit for every wind speed variable.",
+          "enum": [
+            "kmh",
+            "ms",
+            "mph",
+            "kn"
+          ],
+          "default": "kmh"
+        },
+        "precipitation_unit": {
+          "type": "string",
+          "description": "Unit for precipitation, rain, showers and snowfall.",
+          "enum": [
+            "mm",
+            "inch"
+          ],
+          "default": "mm"
+        },
+        "timeformat": {
+          "type": "string",
+          "description": "How times are rendered: ISO 8601 strings without an offset, local to `timezone`, or Unix seconds in UTC.",
+          "enum": [
+            "iso8601",
+            "unixtime"
+          ],
+          "default": "iso8601"
+        },
+        "timezone": {
+          "type": "string",
+          "description": "IANA time zone the daily aggregates and every ISO 8601 time are expressed in; `auto` resolves the zone of the coordinates.",
+          "default": "GMT"
+        },
+        "models": {
+          "type": "array",
+          "description": "Reanalysis models to draw from, such as `era5` or `era5_land`, instead of the automatic best match.",
+          "items": {
+            "type": "string",
+            "description": "One variable name."
+          }
+        },
+        "cell_selection": {
+          "type": "string",
+          "description": "Which grid cell serves the coordinates: the nearest land cell, the nearest sea cell, or the nearest of either.",
+          "enum": [
+            "land",
+            "sea",
+            "nearest"
+          ],
+          "default": "land"
+        }
+      },
+      "required": [
+        "latitude",
+        "longitude",
+        "start_date",
+        "end_date"
+      ]
+    },
+    "response": {
+      "$ref": "WeatherResponse",
+      "description": "The location and the requested series."
+    }
+  },
+  "redacted": [
+    "apikey"
+  ],
+  "unverified": {
+    "reason": "not_captured",
+    "detail": "No recording yet: the sandbox this spec was written in cannot reach open-meteo.com. The `record.yml` workflow replays `examples/*.request.json` through the generated client with `truewire capture` and opens a pull request with the responses."
+  },
+  "notes": [
+    "The response schema is a subset: it names the fields every response carries and types the series maps. Fields not named here pass through unchecked.",
+    "`hourly`, `daily` and `current` are keyed by whichever variables the request asked for, so they are typed as maps rather than records with a fixed field per variable: every value is one column (or one value, for `current`) under the variable name the request used. The `time` column is always there but a map cannot declare one key required.",
+    "Times keep the wire type: an ISO 8601 string local to `timezone` with no offset when `timeformat` is `iso8601`, Unix seconds in UTC when it is `unixtime`. Neither is declared as a timestamp format: `date-time` would label a zone-less local time as if it carried one, and a fixed format would reject the other rendering.",
+    "A request with several comma-separated coordinates makes the API answer with a JSON array of these objects. That form is not described here; the client takes one location per call.",
+    "`apikey` is redacted because the transport adds it to the query on the commercial tier; the free tier sends none.",
+    "No pagination block. The API answers a whole date range in one response with no row cap, and the response is columnar (`hourly.time` beside `hourly.temperature_2m`), so a `window` walk over `start_date`/`end_date` would have no row collection to concatenate or to test for emptiness. A caller who wants years of data splits the range.",
+    "Reanalysis lags real time by a few days; a range ending at today answers with `null` columns for the missing days."
+  ]
+}

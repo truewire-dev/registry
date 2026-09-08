@@ -1,0 +1,5 @@
+{
+  "description": "Open-Meteo: weather forecasts, historical weather, air quality, marine and flood forecasts, geocoding and elevation. Free for non-commercial use without a key; the commercial tier takes one.",
+  "upstream": "https://open-meteo.com/en/docs",
+  "core": "root"
+}

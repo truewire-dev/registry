@@ -37,6 +37,32 @@
         "recordable": false,
         "reason": "The 13 endpoints without recordings need an API key, account state or a real order; the other 62 were recorded in the source project. Nothing here is reachable credential-free."
       }
+    },
+    "open-meteo": {
+      "description": "Open-Meteo: weather forecasts, historical weather (ERA5), air quality, marine and flood forecasts, geocoding and elevation.",
+      "upstream": "https://open-meteo.com/en/docs",
+      "transports": [
+        "http"
+      ],
+      "source": "https://github.com/truewire-dev/open-meteo",
+      "license": "CC0-1.0",
+      "endpoints": 7,
+      "endpoints_with_examples": 0,
+      "endpoints_unverified": 7,
+      "status": "unrecorded",
+      "path": "specs/open-meteo",
+      "recording": {
+        "recordable": true,
+        "hosts": {
+          "": "https://api.open-meteo.com",
+          "weather": "https://api.open-meteo.com",
+          "archive": "https://archive-api.open-meteo.com",
+          "geocoding": "https://geocoding-api.open-meteo.com",
+          "air_quality": "https://air-quality-api.open-meteo.com",
+          "marine": "https://marine-api.open-meteo.com",
+          "flood": "https://flood-api.open-meteo.com"
+        }
+      }
     }
   }
 }

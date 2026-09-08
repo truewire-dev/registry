@@ -1,0 +1,17 @@
+[project]
+name = "open_meteo"
+
+[spec]
+dir = "spec"
+
+[secrets]
+# The commercial tier's key, by name only. Never needed for the free tier, and never
+# read from the environment: a core built on this spec takes it from its caller.
+# `truewire standards` uses the name to flag a recording that leaked one.
+required = ["OPEN_METEO_API_KEY"]
+
+[cores.default]
+# Every endpoint is public on the free tier, so `public` is the whole of what an
+# endpoint has to tell the core (authoring rule 9). Which of Open-Meteo's hosts an
+# endpoint lives on is a per-group fact -- see this spec's README -- not a per-call one.
+meta = { type = "object", properties = { public = { type = "boolean" } }, additionalProperties = false }

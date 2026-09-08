@@ -1,0 +1,5 @@
+{
+  "description": "Ocean wave and swell forecasts, served from `marine-api.open-meteo.com`.",
+  "upstream": "https://open-meteo.com/en/docs/marine-weather-api",
+  "core": "default"
+}

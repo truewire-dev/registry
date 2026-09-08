@@ -1,0 +1,5 @@
+{
+  "description": "Air quality forecasts from the CAMS models, served from `air-quality-api.open-meteo.com`.",
+  "upstream": "https://open-meteo.com/en/docs/air-quality-api",
+  "core": "default"
+}

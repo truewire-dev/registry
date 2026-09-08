@@ -1,0 +1,79 @@
+{
+  "docs": "https://open-meteo.com/en/docs/elevation-api",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/v1/elevation",
+    "method": "GET",
+    "description": "Elevation above sea level for up to 100 coordinates, from the 90 m Copernicus DEM.",
+    "request": {
+      "title": "ElevationRequest",
+      "type": "object",
+      "description": "Elevation parameters.",
+      "properties": {
+        "latitude": {
+          "type": "array",
+          "description": "Latitudes of the points, in degrees; one per `longitude` entry.",
+          "minItems": 1,
+          "maxItems": 100,
+          "items": {
+            "type": "number",
+            "description": "One latitude.",
+            "minimum": -90,
+            "maximum": 90
+          }
+        },
+        "longitude": {
+          "type": "array",
+          "description": "Longitudes of the points, in degrees; one per `latitude` entry.",
+          "minItems": 1,
+          "maxItems": 100,
+          "items": {
+            "type": "number",
+            "description": "One longitude.",
+            "minimum": -180,
+            "maximum": 180
+          }
+        }
+      },
+      "required": [
+        "latitude",
+        "longitude"
+      ]
+    },
+    "response": {
+      "title": "Elevations",
+      "type": "object",
+      "description": "One elevation per requested point, in request order.",
+      "properties": {
+        "elevation": {
+          "type": "array",
+          "description": "Elevation of each point in metres.",
+          "items": {
+            "type": "number",
+            "description": "One elevation."
+          }
+        }
+      },
+      "required": [
+        "elevation"
+      ]
+    }
+  },
+  "redacted": [
+    "apikey"
+  ],
+  "unverified": {
+    "reason": "not_captured",
+    "detail": "No recording yet: the sandbox this spec was written in cannot reach open-meteo.com. The `record.yml` workflow replays `examples/*.request.json` through the generated client with `truewire capture` and opens a pull request with the responses."
+  },
+  "notes": [
+    "Lists are sent as repeated query keys (`latitude=52.52&latitude=48.85`), the form the official Open-Meteo clients use; the documentation shows the comma-separated form, which the API accepts as well.",
+    "`apikey` is redacted because the transport adds it to the query on the commercial tier; the free tier sends none."
+  ]
+}

@@ -33,12 +33,21 @@ tests live in the project that produced it, linked from each `README.md` as `sou
 
 ## Specs
 
-| Name | Endpoints | With examples | Transports |
-| --- | --- | --- | --- |
-| `github` | 6 | 6 | http |
-| `kraken` | 75 | 62 | http, ws |
+| Name | Endpoints | Recorded | Transports | Status |
+| --- | --- | --- | --- | --- |
+| `github` | 6 | 6 | http | recorded |
+| `kraken` | 75 | 62 | http, ws | partial |
 
 (`registry.json` is the source of truth; CI fails if this table's numbers drift from it.)
+
+**Recorded** counts endpoints holding a complete example pair -- a request beside the response
+the API actually sent. **Status** is derived from the tree, never asserted:
+
+| Status | What it means |
+| --- | --- |
+| `recorded` | Every endpoint has a recorded pair. |
+| `partial` | The rest declare `unverified` for a reason a recording run cannot fix: a credential, account state, an effectful call. |
+| `unrecorded` | Something still declares `unverified` with reason `not_captured` -- the spec is written and checked, and the recordings are waiting on a run of the Record workflow. |
 
 ## Adding a spec
 

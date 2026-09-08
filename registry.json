@@ -11,7 +11,13 @@
       "license": "CC0-1.0",
       "endpoints": 6,
       "endpoints_with_examples": 6,
-      "path": "specs/github"
+      "endpoints_unverified": 0,
+      "status": "recorded",
+      "path": "specs/github",
+      "recording": {
+        "recordable": false,
+        "reason": "Recorded in the source project against a real token. api.github.com answers these reads unauthenticated, but at 60 requests an hour per runner IP, so a credential-free re-record from CI is not dependable."
+      }
     },
     "kraken": {
       "description": "Kraken Spot: REST, WebSocket v2 streams and WebSocket trading RPC.",
@@ -24,7 +30,13 @@
       "license": "CC0-1.0",
       "endpoints": 75,
       "endpoints_with_examples": 62,
-      "path": "specs/kraken"
+      "endpoints_unverified": 13,
+      "status": "partial",
+      "path": "specs/kraken",
+      "recording": {
+        "recordable": false,
+        "reason": "The 13 endpoints without recordings need an API key, account state or a real order; the other 62 were recorded in the source project. Nothing here is reachable credential-free."
+      }
     }
   }
 }

@@ -63,6 +63,26 @@
           "flood": "https://flood-api.open-meteo.com"
         }
       }
+    },
+    "usgs-earthquakes": {
+      "description": "USGS earthquakes: the real-time GeoJSON summary feeds and the FDSN event service over the ANSS Comprehensive Catalog.",
+      "upstream": "https://earthquake.usgs.gov/fdsnws/event/1/",
+      "transports": [
+        "http"
+      ],
+      "source": "https://github.com/truewire-dev/registry/tree/main/specs/usgs-earthquakes",
+      "license": "CC0-1.0",
+      "endpoints": 3,
+      "endpoints_with_examples": 0,
+      "endpoints_unverified": 3,
+      "status": "unrecorded",
+      "path": "specs/usgs-earthquakes",
+      "recording": {
+        "recordable": true,
+        "hosts": {
+          "": "https://earthquake.usgs.gov"
+        }
+      }
     }
   }
 }

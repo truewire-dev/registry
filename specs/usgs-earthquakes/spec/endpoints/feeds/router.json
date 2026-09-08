@@ -1,0 +1,5 @@
+{
+  "description": "Pre-built summary feeds, regenerated every minute: one document per magnitude threshold and time span, cached at the edge and meant to be polled.",
+  "upstream": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php",
+  "core": "default"
+}

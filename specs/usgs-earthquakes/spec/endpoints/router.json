@@ -1,0 +1,5 @@
+{
+  "description": "USGS earthquake data: the ANSS Comprehensive Catalog, served as GeoJSON. Real-time summary feeds for what just happened, and the FDSN event service for querying the catalog. Public, no key.",
+  "upstream": "https://earthquake.usgs.gov/fdsnws/event/1/",
+  "core": "root"
+}

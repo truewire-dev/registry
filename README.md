@@ -38,6 +38,7 @@ tests live in the project that produced it, linked from each `README.md` as `sou
 | `github` | 6 | 6 | http | recorded |
 | `kraken` | 75 | 62 | http, ws | partial |
 | `open-meteo` | 7 | 0 | http | unrecorded |
+| `usgs-earthquakes` | 3 | 0 | http | unrecorded |
 
 (`registry.json` is the source of truth; CI fails if this table's numbers drift from it.)
 

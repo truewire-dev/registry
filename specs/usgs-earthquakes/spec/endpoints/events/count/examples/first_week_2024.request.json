@@ -1,0 +1,9 @@
+{
+  "description": "How many magnitude 5 and above in the first week of 2024",
+  "request": {
+    "format": "geojson",
+    "starttime": "2024-01-01T00:00:00Z",
+    "endtime": "2024-01-08T00:00:00Z",
+    "minmagnitude": 5
+  }
+}

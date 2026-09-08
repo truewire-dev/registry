@@ -1,0 +1,5 @@
+{
+  "description": "The FDSN event web service: query the catalog by time, magnitude and location, and count the matches without fetching them.",
+  "upstream": "https://earthquake.usgs.gov/fdsnws/event/1/",
+  "core": "default"
+}

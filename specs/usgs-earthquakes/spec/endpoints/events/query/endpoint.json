@@ -1,0 +1,135 @@
+{
+  "docs": "https://earthquake.usgs.gov/fdsnws/event/1/",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/fdsnws/event/1/query",
+    "method": "GET",
+    "description": "Query the earthquake catalog by time, magnitude and location, and get the matches as GeoJSON.",
+    "request": {
+      "title": "EventQueryRequest",
+      "type": "object",
+      "description": "What to match, and how much of it to return.",
+      "properties": {
+        "format": {
+          "type": "string",
+          "description": "Response format. Only `geojson` is representable here; the service also serves QuakeML, CSV, KML and plain text, which a JSON-validating client cannot read.",
+          "enum": [
+            "geojson"
+          ]
+        },
+        "starttime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Earliest origin time to include, UTC. Inclusive."
+        },
+        "endtime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Latest origin time to include, UTC. Inclusive."
+        },
+        "minmagnitude": {
+          "type": "number",
+          "description": "Smallest magnitude to include."
+        },
+        "maxmagnitude": {
+          "type": "number",
+          "description": "Largest magnitude to include."
+        },
+        "latitude": {
+          "type": "number",
+          "description": "Latitude of the centre of a circular search area, in decimal degrees. Requires `maxradiuskm`.",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "longitude": {
+          "type": "number",
+          "description": "Longitude of the centre of a circular search area, in decimal degrees. Requires `maxradiuskm`.",
+          "minimum": -360,
+          "maximum": 360
+        },
+        "maxradiuskm": {
+          "type": "number",
+          "description": "Radius of the circular search area around `latitude`/`longitude`, in kilometres.",
+          "minimum": 0,
+          "maximum": 20001.9
+        },
+        "minlatitude": {
+          "type": "number",
+          "description": "Southern edge of a rectangular search area, in decimal degrees.",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "maxlatitude": {
+          "type": "number",
+          "description": "Northern edge of a rectangular search area, in decimal degrees.",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "minlongitude": {
+          "type": "number",
+          "description": "Western edge of a rectangular search area, in decimal degrees.",
+          "minimum": -360,
+          "maximum": 360
+        },
+        "maxlongitude": {
+          "type": "number",
+          "description": "Eastern edge of a rectangular search area, in decimal degrees.",
+          "minimum": -360,
+          "maximum": 360
+        },
+        "mindepth": {
+          "type": "number",
+          "description": "Shallowest depth to include, in kilometres."
+        },
+        "maxdepth": {
+          "type": "number",
+          "description": "Deepest depth to include, in kilometres."
+        },
+        "orderby": {
+          "type": "string",
+          "description": "Sort order of the returned events.",
+          "enum": [
+            "time",
+            "time-asc",
+            "magnitude",
+            "magnitude-asc"
+          ]
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Most events to return. Sending it removes `metadata.count` from the answer; see the notes.",
+          "minimum": 1,
+          "maximum": 20000
+        },
+        "offset": {
+          "type": "integer",
+          "description": "Row to start at, counting from 1. Not from 0; see the notes.",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "format"
+      ]
+    },
+    "response": {
+      "$ref": "EarthquakeFeatureCollection",
+      "description": "The matching earthquakes."
+    }
+  },
+  "unverified": {
+    "reason": "not_captured",
+    "detail": "Written from the FDSN event service documentation and the live service's own shape, with no recording committed yet. The Record workflow replays `examples/*.request.json` through a client generated from this spec and fills in the responses."
+  },
+  "notes": [
+    "This endpoint paginates, and no `pagination` block is declared, on purpose (authoring rule 8's \"omission is not a lie the checker can catch\"). Two facts block every strategy the format can state: `offset` counts from 1, and an `offset` walk starts at 0 with no way to say otherwise; and `metadata.count` is replaced by `limit`/`offset` the moment `limit` is sent, so a `total` terminator would raise on a walk's every page. `short_page` on `limit` alone would be declarable, and would also be the only thing the block said, so it is left out rather than half-stated. Do not \"complete\" this block without re-probing both facts.",
+    "`format` is required rather than defaulted: without it the service answers QuakeML, an XML document, and a client that validates JSON would fail on the first call rather than on the spec.",
+    "Bound inclusivity is USGS's own documented behaviour, restated here rather than probed: an endpoint's inclusivity is not a spec fact and nothing checks it.",
+    "A single event is fetched by its own `detail` URL, or by `eventid` on this service, which answers with a bare Feature rather than a FeatureCollection. That is a different response shape, so it is a different endpoint, and it is not specced here."
+  ]
+}

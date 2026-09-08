@@ -1,0 +1,10 @@
+[project]
+name = "hacker_news"
+
+[spec]
+dir = "spec"
+
+[cores.default]
+# The whole API is public and unauthenticated -- it is a read-only Firebase database with
+# open rules -- so `public` is the whole of what an endpoint tells a core (authoring rule 9).
+meta = { type = "object", properties = { public = { type = "boolean" } }, additionalProperties = false }

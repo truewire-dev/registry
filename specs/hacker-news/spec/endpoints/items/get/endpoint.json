@@ -1,0 +1,121 @@
+{
+  "docs": "https://github.com/HackerNews/API#items",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/v0/item/{id}.json",
+    "method": "GET",
+    "description": "Fetch one item by id: a story, a comment, a poll, a poll option or a job.",
+    "request": {
+      "title": "GetItemRequest",
+      "type": "object",
+      "description": "Which item to fetch.",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Item id. One id space for every kind of item; `live.max_item` gives the largest one issued so far."
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "response": {
+      "title": "Item",
+      "type": "object",
+      "description": "One item. Which fields are present depends on `type`: a comment has `parent` and `text` and no `title`, a story has `title` and usually `url`, a poll has `parts`. Only `id` and `type` are on every item.",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "The item's unique id."
+        },
+        "type": {
+          "type": "string",
+          "description": "What kind of item this is.",
+          "enum": [
+            "job",
+            "story",
+            "comment",
+            "poll",
+            "pollopt"
+          ]
+        },
+        "by": {
+          "type": "string",
+          "description": "Username of the item's author."
+        },
+        "time": {
+          "type": "integer",
+          "format": "epoch-seconds",
+          "description": "When the item was created."
+        },
+        "text": {
+          "type": "string",
+          "description": "The comment, story or poll text, as HTML."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of a story, poll or job, as HTML."
+        },
+        "url": {
+          "type": "string",
+          "description": "URL of a story. An empty string on a job that links to its own text."
+        },
+        "score": {
+          "type": "integer",
+          "description": "Story score, or a poll option's vote count."
+        },
+        "descendants": {
+          "type": "integer",
+          "description": "Total comment count, on a story or a poll."
+        },
+        "kids": {
+          "type": "array",
+          "description": "Ids of this item's direct comments, in the site's display order.",
+          "items": {
+            "type": "integer",
+            "description": "One comment id."
+          }
+        },
+        "parent": {
+          "type": "integer",
+          "description": "Id of this comment's parent: another comment, or the story it hangs under."
+        },
+        "poll": {
+          "type": "integer",
+          "description": "Id of the poll a poll option belongs to."
+        },
+        "parts": {
+          "type": "array",
+          "description": "Ids of a poll's options, in display order.",
+          "items": {
+            "type": "integer",
+            "description": "One poll option id."
+          }
+        },
+        "deleted": {
+          "type": "boolean",
+          "description": "True when the item was deleted. A deleted item keeps its id and its place in a thread and loses everything else."
+        },
+        "dead": {
+          "type": "boolean",
+          "description": "True when the item is dead: killed by a moderator or by the spam filter."
+        }
+      },
+      "required": [
+        "id",
+        "type"
+      ]
+    }
+  },
+  "notes": [
+    "One record with optional fields, not an `anyOf` of five variants tagged by `type`. A response union would have to be right about which fields each variant forbids, and the API documents only which are typically present; a variant that forbids a field the API does send fails validation on a real item. The request-side rule (authoring rule 0 / S12) is the opposite because a request union constrains what a caller sends, where being strict is the point.",
+    "An unknown id answers `null` with HTTP 200, which is not an object and does not validate against this schema. That is the API's own shape for \"no such item\"; a core turning it into a `None` or a `NotFound` is the core's decision, not the spec's.",
+    "`url` on a job item is sometimes the empty string rather than absent."
+  ]
+}

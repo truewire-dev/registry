@@ -1,0 +1,176 @@
+{
+  "docs": "https://open-meteo.com/en/docs/geocoding-api",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/v1/search",
+    "method": "GET",
+    "description": "Find places by name and return their coordinates, time zone and administrative context.",
+    "request": {
+      "title": "SearchRequest",
+      "type": "object",
+      "description": "Search parameters.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Place name to search for. Two characters match exactly; three or more match by prefix, fuzzily."
+        },
+        "count": {
+          "type": "integer",
+          "description": "Maximum number of results.",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 10
+        },
+        "language": {
+          "type": "string",
+          "description": "Two-letter language code for the returned names; falls back to English.",
+          "default": "en"
+        },
+        "format": {
+          "type": "string",
+          "description": "Response format. Only JSON is representable by this client; the API also serves protobuf.",
+          "enum": [
+            "json"
+          ],
+          "default": "json"
+        },
+        "countryCode": {
+          "type": "string",
+          "description": "ISO 3166-1 alpha-2 code to restrict results to one country."
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "response": {
+      "title": "SearchResults",
+      "type": "object",
+      "description": "The matching places, best match first. `results` is absent when nothing matched.",
+      "properties": {
+        "results": {
+          "type": "array",
+          "description": "Matching places, best first.",
+          "items": {
+            "title": "Place",
+            "type": "object",
+            "description": "One place from the GeoNames-based index.",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Unique place id."
+              },
+              "name": {
+                "type": "string",
+                "description": "Place name in the requested language."
+              },
+              "latitude": {
+                "type": "number",
+                "description": "Latitude in degrees."
+              },
+              "longitude": {
+                "type": "number",
+                "description": "Longitude in degrees."
+              },
+              "elevation": {
+                "type": "number",
+                "description": "Elevation in metres."
+              },
+              "feature_code": {
+                "type": "string",
+                "description": "GeoNames feature code, such as `PPLC` for a capital."
+              },
+              "country_code": {
+                "type": "string",
+                "description": "ISO 3166-1 alpha-2 country code."
+              },
+              "country_id": {
+                "type": "integer",
+                "description": "Id of the country place."
+              },
+              "country": {
+                "type": "string",
+                "description": "Country name."
+              },
+              "admin1_id": {
+                "type": "integer",
+                "description": "Id of the first-level administrative area."
+              },
+              "admin2_id": {
+                "type": "integer",
+                "description": "Id of the second-level administrative area."
+              },
+              "admin3_id": {
+                "type": "integer",
+                "description": "Id of the third-level administrative area."
+              },
+              "admin4_id": {
+                "type": "integer",
+                "description": "Id of the fourth-level administrative area."
+              },
+              "admin1": {
+                "type": "string",
+                "description": "First-level administrative area, such as a state."
+              },
+              "admin2": {
+                "type": "string",
+                "description": "Second-level administrative area."
+              },
+              "admin3": {
+                "type": "string",
+                "description": "Third-level administrative area."
+              },
+              "admin4": {
+                "type": "string",
+                "description": "Fourth-level administrative area."
+              },
+              "timezone": {
+                "type": "string",
+                "description": "IANA time zone of the place."
+              },
+              "population": {
+                "type": "integer",
+                "description": "Population, where known."
+              },
+              "postcodes": {
+                "type": "array",
+                "description": "Postal codes, where known.",
+                "items": {
+                  "type": "string",
+                  "description": "One postal code."
+                }
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "latitude",
+              "longitude"
+            ]
+          }
+        },
+        "generationtime_ms": {
+          "type": "number",
+          "description": "Server time spent generating the response, in milliseconds."
+        }
+      },
+      "required": [
+        "generationtime_ms"
+      ]
+    }
+  },
+  "redacted": [
+    "apikey"
+  ],
+  "notes": [
+    "The `format` enum lists only `json`: the API also answers `protobuf`, which a JSON-validating client cannot represent, so the value is left out rather than typed as accepted and then rejected at validation.",
+    "Administrative fields and `country_code` are optional: the index has places, oceans among them, without them.",
+    "`apikey` is redacted because the transport adds it to the query on the commercial tier; the free tier sends none."
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "description": "Historical weather from reanalysis models (ERA5 and others), served from `archive-api.open-meteo.com`.",
+  "upstream": "https://open-meteo.com/en/docs/historical-weather-api",
+  "core": "default"
+}

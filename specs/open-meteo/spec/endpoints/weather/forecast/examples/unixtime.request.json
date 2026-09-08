@@ -1,0 +1,13 @@
+{
+  "description": "One day of Berlin temperature with Unix-second times and imperial units",
+  "request": {
+    "latitude": 52.52,
+    "longitude": 13.41,
+    "hourly": [
+      "temperature_2m"
+    ],
+    "timeformat": "unixtime",
+    "temperature_unit": "fahrenheit",
+    "forecast_days": 1
+  }
+}

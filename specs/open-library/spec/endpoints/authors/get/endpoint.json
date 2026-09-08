@@ -1,0 +1,127 @@
+{
+  "docs": "https://openlibrary.org/dev/docs/api/authors",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/authors/{author_id}.json",
+    "method": "GET",
+    "description": "Fetch one author record.",
+    "request": {
+      "title": "GetAuthorRequest",
+      "type": "object",
+      "description": "Which author to fetch.",
+      "properties": {
+        "author_id": {
+          "type": "string",
+          "description": "Author id, the last segment of an author key: `OL79034A` for `/authors/OL79034A`."
+        }
+      },
+      "required": [
+        "author_id"
+      ]
+    },
+    "response": {
+      "title": "Author",
+      "type": "object",
+      "description": "One author record. As with a work, most fields are optional: a record grows one edit at a time.",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "The author's own key, such as `/authors/OL79034A`."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name as it is displayed."
+        },
+        "personal_name": {
+          "type": "string",
+          "description": "Name in catalogue order, surname first."
+        },
+        "alternate_names": {
+          "type": "array",
+          "description": "Other names this author has been catalogued under.",
+          "items": {
+            "type": "string",
+            "description": "One alternate name."
+          }
+        },
+        "title": {
+          "type": "string",
+          "description": "An honorific or a role, such as `novelist`. Not a book title."
+        },
+        "type": {
+          "$ref": "KeyReference"
+        },
+        "bio": {
+          "description": "Biography. A plain string on some records and a `TextValue` on others, exactly like a work's `description`.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "TextValue"
+            }
+          ]
+        },
+        "photos": {
+          "type": "array",
+          "description": "Photo ids, for `https://covers.openlibrary.org/a/id/<id>-L.jpg`.",
+          "items": {
+            "type": "integer",
+            "description": "One photo id."
+          }
+        },
+        "links": {
+          "type": "array",
+          "description": "External links editors attached to the author.",
+          "items": {
+            "$ref": "RecordLink"
+          }
+        },
+        "remote_ids": {
+          "type": "object",
+          "description": "This author's ids in other catalogues, keyed by the catalogue's name: `wikidata`, `viaf`, `isni` and others as editors add them.",
+          "additionalProperties": {
+            "type": "string",
+            "description": "One identifier in that catalogue."
+          }
+        },
+        "source_records": {
+          "type": "array",
+          "description": "Where the record's data came from, one entry per import.",
+          "items": {
+            "type": "string",
+            "description": "One source record identifier, such as `marc:harvard_bibliographic_metadata/...`."
+          }
+        },
+        "revision": {
+          "type": "integer",
+          "description": "Revision number of the record as served."
+        },
+        "latest_revision": {
+          "type": "integer",
+          "description": "Highest revision number the record has."
+        },
+        "created": {
+          "$ref": "TimestampValue"
+        },
+        "last_modified": {
+          "$ref": "TimestampValue"
+        }
+      },
+      "required": [
+        "key",
+        "name"
+      ]
+    }
+  },
+  "notes": [
+    "`remote_ids` is a map, not a record: the catalogues an author is linked to are open-ended, so there is no fixed set of properties to name.",
+    "`birth_date` and `death_date` are served and are not declared, for the same reason a work's `first_publish_date` is not: their values are free-form human text (`8 October 1920`), so there is no wire format to declare and no conversion to promise."
+  ]
+}

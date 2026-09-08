@@ -1,0 +1,82 @@
+{
+  "KeyReference": {
+    "title": "KeyReference",
+    "type": "object",
+    "description": "A pointer to another record, as its Open Library key. Append `.json` to the key for the record itself: `/authors/OL79034A` is fetched from `/authors/OL79034A.json`.",
+    "properties": {
+      "key": {
+        "type": "string",
+        "description": "Open Library key, such as `/authors/OL79034A` or `/type/work`."
+      }
+    },
+    "required": [
+      "key"
+    ]
+  },
+  "TextValue": {
+    "title": "TextValue",
+    "type": "object",
+    "description": "A block of text in Open Library's own typed-value form. The same field is sometimes a plain string instead, depending on how the record was last edited.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "description": "Always `/type/text`.",
+        "enum": [
+          "/type/text"
+        ]
+      },
+      "value": {
+        "type": "string",
+        "description": "The text itself."
+      }
+    },
+    "required": [
+      "type",
+      "value"
+    ]
+  },
+  "TimestampValue": {
+    "title": "TimestampValue",
+    "type": "object",
+    "description": "A revision timestamp in Open Library's typed-value form.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "description": "Always `/type/datetime`.",
+        "enum": [
+          "/type/datetime"
+        ]
+      },
+      "value": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When it happened, ISO 8601 with microseconds and no offset. Open Library keeps these in UTC and does not say so on the wire, so this parses to a naive datetime: the wire's own value, not a guess about its zone."
+      }
+    },
+    "required": [
+      "type",
+      "value"
+    ]
+  },
+  "RecordLink": {
+    "title": "RecordLink",
+    "type": "object",
+    "description": "An external link an editor attached to a record.",
+    "properties": {
+      "title": {
+        "type": "string",
+        "description": "Link text."
+      },
+      "url": {
+        "type": "string",
+        "description": "Link target."
+      },
+      "type": {
+        "$ref": "KeyReference"
+      }
+    },
+    "required": [
+      "url"
+    ]
+  }
+}

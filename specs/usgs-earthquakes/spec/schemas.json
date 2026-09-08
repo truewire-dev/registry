@@ -1,0 +1,414 @@
+{
+  "EarthquakeFeatureCollection": {
+    "title": "EarthquakeFeatureCollection",
+    "type": "object",
+    "description": "A GeoJSON FeatureCollection of earthquakes: the wire frame both the summary feeds and the event query answer with.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "description": "GeoJSON type of the document.",
+        "enum": [
+          "FeatureCollection"
+        ]
+      },
+      "metadata": {
+        "title": "FeedMetadata",
+        "type": "object",
+        "description": "About this answer, not about the earthquakes in it.",
+        "properties": {
+          "generated": {
+            "type": "integer",
+            "format": "epoch-millis",
+            "description": "When this document was generated."
+          },
+          "url": {
+            "type": "string",
+            "description": "URL that produced this document."
+          },
+          "title": {
+            "type": "string",
+            "description": "Human-readable title, such as `USGS Significant Earthquakes, Past Week`."
+          },
+          "status": {
+            "type": "integer",
+            "description": "HTTP status the service assigned to the query, repeated inside the body."
+          },
+          "api": {
+            "type": "string",
+            "description": "Version of the service that answered, such as `2.7.0`."
+          },
+          "count": {
+            "type": "integer",
+            "description": "Number of features in this document. Absent once `limit` is sent, which is why no pagination is declared; see the endpoint's notes."
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Row limit the query carried, echoed back. Present only when the query sent one."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Row offset the query carried, echoed back. Present only when the query sent one."
+          }
+        },
+        "required": [
+          "generated",
+          "url",
+          "title",
+          "status",
+          "api"
+        ]
+      },
+      "features": {
+        "type": "array",
+        "description": "One entry per earthquake, newest first unless the query asked otherwise.",
+        "items": {
+          "$ref": "EarthquakeFeature"
+        }
+      },
+      "bbox": {
+        "title": "BoundingBox",
+        "type": "array",
+        "description": "Bounding box of every feature in the document: minimum corner then maximum corner, each longitude, latitude, depth. Absent when the document holds no features, and on the event query.",
+        "minItems": 6,
+        "maxItems": 6,
+        "prefixItems": [
+          {
+            "title": "minimumLongitude",
+            "type": "number",
+            "description": "Westernmost longitude, in decimal degrees."
+          },
+          {
+            "title": "minimumLatitude",
+            "type": "number",
+            "description": "Southernmost latitude, in decimal degrees."
+          },
+          {
+            "title": "minimumDepth",
+            "type": "number",
+            "description": "Shallowest depth, in kilometres."
+          },
+          {
+            "title": "maximumLongitude",
+            "type": "number",
+            "description": "Easternmost longitude, in decimal degrees."
+          },
+          {
+            "title": "maximumLatitude",
+            "type": "number",
+            "description": "Northernmost latitude, in decimal degrees."
+          },
+          {
+            "title": "maximumDepth",
+            "type": "number",
+            "description": "Deepest depth, in kilometres."
+          }
+        ]
+      }
+    },
+    "required": [
+      "type",
+      "metadata",
+      "features"
+    ]
+  },
+  "EarthquakeFeature": {
+    "title": "EarthquakeFeature",
+    "type": "object",
+    "description": "One earthquake as a GeoJSON feature: where it was, and everything known about it.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "description": "GeoJSON type of the entry.",
+        "enum": [
+          "Feature"
+        ]
+      },
+      "id": {
+        "type": "string",
+        "description": "Event id, the network code and the event code joined, such as `us6000m0xl`."
+      },
+      "properties": {
+        "$ref": "EarthquakeProperties"
+      },
+      "geometry": {
+        "title": "EarthquakePoint",
+        "type": "object",
+        "description": "Where the earthquake was, as a GeoJSON point.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "GeoJSON geometry type.",
+            "enum": [
+              "Point"
+            ]
+          },
+          "coordinates": {
+            "title": "EpicenterCoordinates",
+            "type": "array",
+            "description": "Longitude, latitude and depth, in that order. GeoJSON puts longitude first, and USGS uses the third position for depth in kilometres rather than the altitude GeoJSON nominally means.",
+            "minItems": 3,
+            "maxItems": 3,
+            "prefixItems": [
+              {
+                "title": "longitude",
+                "type": "number",
+                "description": "Longitude in decimal degrees, negative west of the prime meridian."
+              },
+              {
+                "title": "latitude",
+                "type": "number",
+                "description": "Latitude in decimal degrees, negative south of the equator."
+              },
+              {
+                "title": "depth",
+                "type": "number",
+                "description": "Depth of the event below the surface, in kilometres. Negative for an event located above the surface."
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "coordinates"
+        ]
+      }
+    },
+    "required": [
+      "type",
+      "id",
+      "properties",
+      "geometry"
+    ]
+  },
+  "EarthquakeProperties": {
+    "title": "EarthquakeProperties",
+    "type": "object",
+    "description": "What is known about one earthquake. Most fields are null until the contributing network has computed them.",
+    "properties": {
+      "mag": {
+        "description": "Magnitude, on the scale named by `magType`. Null before a magnitude has been computed.",
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "place": {
+        "description": "Human-readable description of the location, relative to a named place.",
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "time": {
+        "type": "integer",
+        "format": "epoch-millis",
+        "description": "When the earthquake happened, UTC."
+      },
+      "updated": {
+        "type": "integer",
+        "format": "epoch-millis",
+        "description": "When this event's information was last updated, UTC."
+      },
+      "tz": {
+        "description": "Time zone offset from UTC at the epicenter, in minutes. Deprecated by USGS and null on every current event.",
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "url": {
+        "type": "string",
+        "description": "Event page for a human reader."
+      },
+      "detail": {
+        "type": "string",
+        "description": "URL of this event's own GeoJSON document, which carries the products the summary leaves out."
+      },
+      "felt": {
+        "description": "Number of \"Did You Feel It?\" responses. Null when nobody has reported one.",
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "cdi": {
+        "description": "Maximum reported intensity, from \"Did You Feel It?\" responses.",
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "mmi": {
+        "description": "Maximum estimated instrumental intensity, from ShakeMap.",
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "alert": {
+        "description": "PAGER alert level, an estimate of the impact. Null until PAGER has run.",
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "green",
+              "yellow",
+              "orange",
+              "red"
+            ]
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "status": {
+        "type": "string",
+        "description": "Whether a human has reviewed this event.",
+        "enum": [
+          "automatic",
+          "reviewed",
+          "deleted"
+        ]
+      },
+      "tsunami": {
+        "type": "integer",
+        "description": "1 when the event is in a region with an active tsunami-warning system and large enough to matter, 0 otherwise. Not a tsunami warning.",
+        "enum": [
+          0,
+          1
+        ]
+      },
+      "sig": {
+        "type": "integer",
+        "description": "How significant the event is, 0 to 1000, from magnitude, felt reports and estimated impact."
+      },
+      "net": {
+        "type": "string",
+        "description": "Id of the network that contributed the preferred information, such as `us`."
+      },
+      "code": {
+        "type": "string",
+        "description": "Event code assigned by `net`, unique within that network."
+      },
+      "ids": {
+        "type": "string",
+        "description": "Every event id this event has been known by, comma-delimited with a leading and trailing comma."
+      },
+      "sources": {
+        "type": "string",
+        "description": "Every network that contributed to this event, comma-delimited with a leading and trailing comma."
+      },
+      "types": {
+        "type": "string",
+        "description": "Every product type associated with this event, comma-delimited with a leading and trailing comma."
+      },
+      "nst": {
+        "description": "Number of seismic stations used to compute the location.",
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "dmin": {
+        "description": "Horizontal distance from the epicenter to the nearest station, in degrees.",
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "rms": {
+        "description": "Root-mean-square travel-time residual, in seconds.",
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "gap": {
+        "description": "Largest azimuthal gap between stations, in degrees; a smaller gap means a better-constrained location.",
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "magType": {
+        "description": "Method used to compute `mag`, such as `mww`, `mb` or `ml`. Left a plain string: USGS lists the methods it uses today and adds to that list, so a `Literal` would reject a valid future response.",
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "type": {
+        "type": "string",
+        "description": "Kind of seismic event: `earthquake` for nearly all of them, and quarry blasts, explosions and ice quakes for the rest. A plain string for the same reason as `magType`."
+      },
+      "title": {
+        "type": "string",
+        "description": "Magnitude and place in one line, such as `M 7.5 - 2024 Noto Peninsula, Japan Earthquake`."
+      }
+    },
+    "required": [
+      "mag",
+      "place",
+      "time",
+      "updated",
+      "url",
+      "detail",
+      "status",
+      "tsunami",
+      "sig",
+      "net",
+      "code",
+      "ids",
+      "sources",
+      "types",
+      "magType",
+      "type",
+      "title"
+    ]
+  }
+}

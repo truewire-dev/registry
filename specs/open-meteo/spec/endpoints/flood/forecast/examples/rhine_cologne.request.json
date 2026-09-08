@@ -1,0 +1,11 @@
+{
+  "description": "A week of Rhine discharge at Cologne",
+  "request": {
+    "latitude": 50.94,
+    "longitude": 6.96,
+    "daily": [
+      "river_discharge"
+    ],
+    "forecast_days": 7
+  }
+}

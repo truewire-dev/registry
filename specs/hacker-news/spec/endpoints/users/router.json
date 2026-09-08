@@ -1,0 +1,5 @@
+{
+  "description": "Users: the public half of a profile, keyed by the case-sensitive username.",
+  "upstream": "https://github.com/HackerNews/API#users",
+  "core": "default"
+}

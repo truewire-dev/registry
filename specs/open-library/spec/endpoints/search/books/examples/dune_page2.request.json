@@ -1,0 +1,15 @@
+{
+  "description": "Second page of the same walk; the generated `_paged` walk sends `page` explicitly, so the recording does too",
+  "request": {
+    "q": "dune frank herbert",
+    "fields": [
+      "key",
+      "title",
+      "author_name",
+      "first_publish_year",
+      "edition_count"
+    ],
+    "limit": 2,
+    "page": 2
+  }
+}

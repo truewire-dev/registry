@@ -1,0 +1,149 @@
+{
+  "WeatherResponse": {
+    "title": "WeatherResponse",
+    "type": "object",
+    "description": "One location and the series the request asked for. Every `*_units` map documents its data map.",
+    "properties": {
+      "latitude": {
+        "type": "number",
+        "description": "Latitude of the grid cell that served the request; may differ slightly from the one asked for."
+      },
+      "longitude": {
+        "type": "number",
+        "description": "Longitude of the grid cell that served the request."
+      },
+      "generationtime_ms": {
+        "type": "number",
+        "description": "Server time spent generating the response, in milliseconds."
+      },
+      "utc_offset_seconds": {
+        "type": "integer",
+        "description": "Offset of `timezone` from UTC, in seconds."
+      },
+      "timezone": {
+        "type": "string",
+        "description": "Time zone the times are expressed in, as requested or resolved from `auto`."
+      },
+      "timezone_abbreviation": {
+        "type": "string",
+        "description": "Abbreviation of `timezone`, such as `CET`."
+      },
+      "elevation": {
+        "type": "number",
+        "description": "Elevation of the grid cell in metres, used for downscaling."
+      },
+      "current_units": {
+        "type": "object",
+        "description": "Unit of every requested variable, plus the `time` format, keyed like the data map.",
+        "additionalProperties": {
+          "type": "string",
+          "description": "Unit label as the API prints it."
+        }
+      },
+      "current": {
+        "type": "object",
+        "description": "The latest value of every requested variable, plus `time` and the `interval` in seconds it covers.",
+        "additionalProperties": {
+          "description": "One value: a number, `time` as ISO 8601 text, or `null` where the model has none.",
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "hourly_units": {
+        "type": "object",
+        "description": "Unit of every requested variable, plus the `time` format, keyed like the data map.",
+        "additionalProperties": {
+          "type": "string",
+          "description": "Unit label as the API prints it."
+        }
+      },
+      "hourly": {
+        "type": "object",
+        "description": "One column per requested variable, plus `time`, all the same length.",
+        "additionalProperties": {
+          "description": "A column: numbers (`null` where a value is missing), or strings for `time` and any ISO 8601 variable.",
+          "anyOf": [
+            {
+              "type": "array",
+              "description": "Numeric column.",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "One value; `null` where the model has none."
+              }
+            },
+            {
+              "type": "array",
+              "description": "String column: `time` as ISO 8601, or a variable the API renders as text.",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      },
+      "daily_units": {
+        "type": "object",
+        "description": "Unit of every requested variable, plus the `time` format, keyed like the data map.",
+        "additionalProperties": {
+          "type": "string",
+          "description": "Unit label as the API prints it."
+        }
+      },
+      "daily": {
+        "type": "object",
+        "description": "One column per requested variable, plus `time`, all the same length.",
+        "additionalProperties": {
+          "description": "A column: numbers (`null` where a value is missing), or strings for `time` and any ISO 8601 variable.",
+          "anyOf": [
+            {
+              "type": "array",
+              "description": "Numeric column.",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "One value; `null` where the model has none."
+              }
+            },
+            {
+              "type": "array",
+              "description": "String column: `time` as ISO 8601, or a variable the API renders as text.",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "required": [
+      "latitude",
+      "longitude",
+      "generationtime_ms",
+      "utc_offset_seconds",
+      "timezone",
+      "timezone_abbreviation"
+    ]
+  }
+}

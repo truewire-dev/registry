@@ -1,0 +1,8 @@
+{
+  "description": "One result with no `fields`, so the API returns its own default set",
+  "request": {
+    "q": "the left hand of darkness",
+    "limit": 1,
+    "page": 1
+  }
+}

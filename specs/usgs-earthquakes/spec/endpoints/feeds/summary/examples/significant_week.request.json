@@ -1,0 +1,6 @@
+{
+  "description": "Every significant earthquake in the past week",
+  "request": {
+    "feed": "significant_week"
+  }
+}

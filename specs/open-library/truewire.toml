@@ -1,0 +1,11 @@
+[project]
+name = "open_library"
+
+[spec]
+dir = "spec"
+
+[cores.default]
+# Open Library serves every read here without a key; only the write APIs (edit, lists,
+# reading log) authenticate, and none of them are specced. So `public` is the whole of
+# what an endpoint tells a core (authoring rule 9).
+meta = { type = "object", properties = { public = { type = "boolean" } }, additionalProperties = false }

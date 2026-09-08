@@ -1,0 +1,5 @@
+{
+  "description": "Search over works: one query, a page of matching works, and the count behind them.",
+  "upstream": "https://openlibrary.org/dev/docs/api/search",
+  "core": "default"
+}

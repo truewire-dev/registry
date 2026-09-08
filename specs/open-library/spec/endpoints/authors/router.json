@@ -1,0 +1,5 @@
+{
+  "description": "Authors: the person record a work's `authors` entries point at.",
+  "upstream": "https://openlibrary.org/dev/docs/api/authors",
+  "core": "default"
+}

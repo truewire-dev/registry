@@ -1,0 +1,5 @@
+{
+  "description": "Open Library, the Internet Archive's open catalogue of books: full-text search over works, and the work and author records behind the results. Read access is public and needs no key.",
+  "upstream": "https://openlibrary.org/developers/api",
+  "core": "root"
+}

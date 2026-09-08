@@ -1,0 +1,6 @@
+{
+  "description": "The front page, as 500 item ids in rank order",
+  "request": {
+    "feed": "topstories"
+  }
+}

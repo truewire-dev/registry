@@ -1,0 +1,10 @@
+[project]
+name = "usgs_earthquakes"
+
+[spec]
+dir = "spec"
+
+[cores.default]
+# Every endpoint is public: the ANSS Comprehensive Catalog serves all of it without a
+# key, so `public` is the whole of what an endpoint has to tell a core (authoring rule 9).
+meta = { type = "object", properties = { public = { type = "boolean" } }, additionalProperties = false }

@@ -1,0 +1,15 @@
+{
+  "description": "First page of two results for Dune, with only the fields a result list needs",
+  "request": {
+    "q": "dune frank herbert",
+    "fields": [
+      "key",
+      "title",
+      "author_name",
+      "first_publish_year",
+      "edition_count"
+    ],
+    "limit": 2,
+    "page": 1
+  }
+}

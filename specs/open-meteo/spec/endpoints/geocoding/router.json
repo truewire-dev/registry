@@ -1,0 +1,5 @@
+{
+  "description": "Place-name search returning coordinates, served from `geocoding-api.open-meteo.com`.",
+  "upstream": "https://open-meteo.com/en/docs/geocoding-api",
+  "core": "default"
+}

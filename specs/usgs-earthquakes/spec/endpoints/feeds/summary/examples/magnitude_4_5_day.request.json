@@ -1,0 +1,6 @@
+{
+  "description": "Everything at magnitude 4.5 or above in the past day",
+  "request": {
+    "feed": "4.5_day"
+  }
+}

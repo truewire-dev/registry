@@ -1,0 +1,70 @@
+{
+  "docs": "https://github.com/HackerNews/API#users",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/v0/user/{id}.json",
+    "method": "GET",
+    "description": "Fetch one user's public profile.",
+    "request": {
+      "title": "GetUserRequest",
+      "type": "object",
+      "description": "Which user to fetch.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Username, case-sensitive and unique. Only users who have posted have a profile."
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "response": {
+      "title": "User",
+      "type": "object",
+      "description": "The public half of a profile. Everything private -- email, votes, saved items -- is not served by this API at all.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The username, as given."
+        },
+        "created": {
+          "type": "integer",
+          "format": "epoch-seconds",
+          "description": "When the account was created."
+        },
+        "karma": {
+          "type": "integer",
+          "description": "The user's karma."
+        },
+        "about": {
+          "type": "string",
+          "description": "The user's self-description, as HTML. Absent when they have not written one."
+        },
+        "submitted": {
+          "type": "array",
+          "description": "Ids of everything the user has submitted -- stories, comments, polls -- newest first. Long for an active account.",
+          "items": {
+            "type": "integer",
+            "description": "One item id."
+          }
+        }
+      },
+      "required": [
+        "id",
+        "created",
+        "karma"
+      ]
+    }
+  },
+  "notes": [
+    "An unknown username answers `null` with HTTP 200, the same way an unknown item id does.",
+    "`submitted` is the whole history in one array, with no paging of any kind: an active account's profile is a large response, and there is no parameter that makes it smaller."
+  ]
+}

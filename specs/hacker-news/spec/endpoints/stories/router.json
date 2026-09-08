@@ -1,0 +1,5 @@
+{
+  "description": "The ranked lists behind the site's own pages: front page, newest, best, Ask HN, Show HN and jobs, each an ordered array of item ids.",
+  "upstream": "https://github.com/HackerNews/API#new-top-and-best-stories",
+  "core": "default"
+}

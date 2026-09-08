@@ -1,0 +1,13 @@
+{
+  "description": "Everything within 100 km of Grindavik, Iceland, in November 2023, smallest magnitude first",
+  "request": {
+    "format": "geojson",
+    "starttime": "2023-11-01T00:00:00Z",
+    "endtime": "2023-12-01T00:00:00Z",
+    "latitude": 63.85,
+    "longitude": -22.43,
+    "maxradiuskm": 100,
+    "minmagnitude": 4,
+    "orderby": "magnitude-asc"
+  }
+}

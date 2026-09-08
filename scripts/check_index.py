@@ -100,6 +100,23 @@ def main() -> int:
         problems.append(f'{name}: recording.hosts needs a "" entry, the base URL for ungrouped endpoints')
     elif not recording.get('reason'):
       problems.append(f'{name}: not recordable, so `recording.reason` must say why')
+    if recording['recordable']:
+      # `scripts/record.py` builds its throwaway client on `truewire init`'s default core,
+      # which hands the whole response body to validation. An endpoint declaring
+      # `envelope.payload` returns the value inside the frame instead, so that core would
+      # validate a frame against a payload type and fail. Recording such a spec needs a
+      # core that unwraps, which is the source project's job, not this repository's.
+      enveloped = [
+        str(path.parent.relative_to(ROOT / 'specs' / name / 'spec' / 'endpoints'))
+        for path in sorted((ROOT / 'specs' / name / 'spec' / 'endpoints').rglob('endpoint.json'))
+        if json.loads(path.read_text()).get('envelope', {}).get('payload')
+      ]
+      if enveloped:
+        problems.append(
+          f'{name}: marked recordable, but {len(enveloped)} endpoint(s) declare '
+          f'`envelope.payload` ({", ".join(enveloped[:3])}), which the recorder\'s '
+          'pass-through core cannot unwrap'
+        )
     if entry.get('status') == 'unrecorded' and not recording.get('recordable'):
       problems.append(
         f'{name}: endpoints declare `unverified` with reason `not_captured`, which claims a '

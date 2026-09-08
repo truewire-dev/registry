@@ -1,0 +1,220 @@
+{
+  "docs": "https://openlibrary.org/dev/docs/api/search",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/search.json",
+    "method": "GET",
+    "description": "Search the catalogue and return a page of matching works, best match first.",
+    "request": {
+      "title": "SearchBooksRequest",
+      "type": "object",
+      "description": "The query, and which page of it to return.",
+      "properties": {
+        "q": {
+          "type": "string",
+          "description": "The query. Free text, or a fielded Solr query such as `author:tolkien subject:fantasy`."
+        },
+        "title": {
+          "type": "string",
+          "description": "Restrict the search to titles."
+        },
+        "author": {
+          "type": "string",
+          "description": "Restrict the search to author names."
+        },
+        "subject": {
+          "type": "string",
+          "description": "Restrict the search to subjects."
+        },
+        "page": {
+          "type": "integer",
+          "description": "Which page of results to return, counting from 1.",
+          "minimum": 1
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Results per page.",
+          "minimum": 1
+        },
+        "fields": {
+          "type": "array",
+          "description": "Which fields to return on each result. Omit it and the API picks a default set; name them and each result carries only those, which is how a search response is kept small.",
+          "items": {
+            "type": "string",
+            "description": "One field name, such as `key`, `title` or `author_name`."
+          }
+        },
+        "sort": {
+          "type": "string",
+          "description": "Sort order, such as `new`, `old`, `rating` or `editions`. Omit it for relevance."
+        },
+        "language": {
+          "type": "string",
+          "description": "Restrict results to one language, as a three-letter MARC code such as `eng`."
+        }
+      },
+      "required": [
+        "q"
+      ]
+    },
+    "response": {
+      "title": "SearchResults",
+      "type": "object",
+      "description": "One page of results, and the counts around it.",
+      "properties": {
+        "numFound": {
+          "type": "integer",
+          "description": "How many works matched. Exact when `numFoundExact` is true, a lower bound otherwise."
+        },
+        "numFoundExact": {
+          "type": "boolean",
+          "description": "Whether `numFound` is an exact count rather than an estimate."
+        },
+        "start": {
+          "type": "integer",
+          "description": "Index of the first result on this page, counting from 0."
+        },
+        "num_found": {
+          "type": "integer",
+          "description": "The same number as `numFound`, under the name an older version of this API used."
+        },
+        "q": {
+          "type": "string",
+          "description": "The query as the search parsed it."
+        },
+        "offset": {
+          "description": "The `offset` the request carried, or null when it paged by `page` instead.",
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "documentation_url": {
+          "type": "string",
+          "description": "Link to the search API's own documentation, returned on every response."
+        },
+        "docs": {
+          "type": "array",
+          "description": "The matching works, best match first.",
+          "items": {
+            "title": "SearchDoc",
+            "type": "object",
+            "description": "One matching work. Every field is optional: `fields` on the request decides which are present, and a work that has no cover or no fulltext simply omits those.",
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": "The work's Open Library key, such as `/works/OL893414W`."
+              },
+              "title": {
+                "type": "string",
+                "description": "Work title."
+              },
+              "subtitle": {
+                "type": "string",
+                "description": "Work subtitle."
+              },
+              "author_key": {
+                "type": "array",
+                "description": "Author keys, without the `/authors/` prefix, in the same order as `author_name`.",
+                "items": {
+                  "type": "string",
+                  "description": "One author id, such as `OL79034A`."
+                }
+              },
+              "author_name": {
+                "type": "array",
+                "description": "Author names, in the same order as `author_key`.",
+                "items": {
+                  "type": "string",
+                  "description": "One author name."
+                }
+              },
+              "first_publish_year": {
+                "type": "integer",
+                "description": "Year the earliest known edition was published."
+              },
+              "edition_count": {
+                "type": "integer",
+                "description": "How many editions of this work Open Library holds."
+              },
+              "cover_i": {
+                "type": "integer",
+                "description": "Cover id, for `https://covers.openlibrary.org/b/id/<cover_i>-L.jpg`."
+              },
+              "cover_edition_key": {
+                "type": "string",
+                "description": "Key of the edition the cover was taken from."
+              },
+              "has_fulltext": {
+                "type": "boolean",
+                "description": "Whether the Internet Archive holds a scan whose text is searchable."
+              },
+              "public_scan_b": {
+                "type": "boolean",
+                "description": "Whether a scan is readable by anyone, rather than lendable."
+              },
+              "ebook_access": {
+                "type": "string",
+                "description": "How readable the work is: values seen include `no_ebook`, `printdisabled`, `borrowable` and `public`. Left a plain string rather than an `enum`, because Open Library publishes the vocabulary in prose and adds to it."
+              },
+              "ia": {
+                "type": "array",
+                "description": "Internet Archive identifiers of scans of this work.",
+                "items": {
+                  "type": "string",
+                  "description": "One Internet Archive identifier."
+                }
+              },
+              "language": {
+                "type": "array",
+                "description": "Languages the work has editions in, as three-letter MARC codes.",
+                "items": {
+                  "type": "string",
+                  "description": "One MARC language code, such as `eng`."
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "numFound",
+        "start",
+        "docs"
+      ]
+    }
+  },
+  "pagination": {
+    "strategy": "page",
+    "index": {
+      "parameter": "page",
+      "start": 1
+    },
+    "size": {
+      "parameter": "limit"
+    },
+    "done": {
+      "kind": "short_page",
+      "rows": "docs"
+    }
+  },
+  "unverified": {
+    "reason": "not_captured",
+    "detail": "Written from the Open Library documentation and the live endpoint's own shape, with no recording committed yet. The Record workflow replays `examples/*.request.json` through a client generated from this spec and fills in the responses."
+  },
+  "notes": [
+    "The walk ends on a short page, not on `numFound`. A `total` terminator would be the richer declaration and the wrong one: `numFoundExact` exists because the count is sometimes an estimate, and the generated walk raises when a declared total moves between pages. A page holding fewer rows than `limit` is the last page under every one of the API's own modes, so that is what is declared.",
+    "The frame is kept rather than unwrapped: `numFound` and `numFoundExact` are things the caller asked for, so this is authoring rule 6's \"keep the envelope\" branch and there is no `envelope` block. The pagination paths are therefore relative to the frame, which is why `done.rows` is `docs`.",
+    "`page` and `offset` are two ways to say the same thing and the API accepts either. Only `page` is declared as the walk's index; `offset` is left out of the request entirely so a caller cannot send both and get a page neither of them asked for."
+  ]
+}

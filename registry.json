@@ -58,6 +58,26 @@
         "reason": "The 13 endpoints without recordings need an API key, account state or a real order; the other 62 were recorded in the source project. Nothing here is reachable credential-free."
       }
     },
+    "open-library": {
+      "description": "Open Library, the Internet Archive's book catalogue: search over works, plus the work and author records behind the results.",
+      "upstream": "https://openlibrary.org/developers/api",
+      "transports": [
+        "http"
+      ],
+      "source": "https://github.com/truewire-dev/registry/tree/main/specs/open-library",
+      "license": "CC0-1.0",
+      "endpoints": 3,
+      "endpoints_with_examples": 0,
+      "endpoints_unverified": 3,
+      "status": "unrecorded",
+      "path": "specs/open-library",
+      "recording": {
+        "recordable": true,
+        "hosts": {
+          "": "https://openlibrary.org"
+        }
+      }
+    },
     "open-meteo": {
       "description": "Open-Meteo: weather forecasts, historical weather (ERA5), air quality, marine and flood forecasts, geocoding and elevation.",
       "upstream": "https://open-meteo.com/en/docs",

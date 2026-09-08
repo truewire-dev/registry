@@ -1,0 +1,5 @@
+{
+  "description": "Works: the abstract book, above any particular edition of it. What a search result's `key` points at.",
+  "upstream": "https://openlibrary.org/dev/docs/api/books",
+  "core": "default"
+}

@@ -36,6 +36,7 @@ tests live in the project that produced it, linked from each `README.md` as `sou
 | Name | Endpoints | Recorded | Transports | Status |
 | --- | --- | --- | --- | --- |
 | `github` | 6 | 6 | http | recorded |
+| `hacker-news` | 5 | 0 | http | unrecorded |
 | `kraken` | 75 | 62 | http, ws | partial |
 | `open-meteo` | 7 | 0 | http | unrecorded |
 | `usgs-earthquakes` | 3 | 0 | http | unrecorded |

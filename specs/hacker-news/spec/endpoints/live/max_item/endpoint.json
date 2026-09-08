@@ -1,0 +1,32 @@
+{
+  "docs": "https://github.com/HackerNews/API#max-item-id",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/v0/maxitem.json",
+    "method": "GET",
+    "description": "Fetch the largest item id yet assigned.",
+    "request": {
+      "title": "MaxItemRequest",
+      "type": "object",
+      "description": "No parameters.",
+      "properties": {}
+    },
+    "response": {
+      "type": "integer",
+      "description": "The current largest item id. Walk backwards from it to see everything the site has."
+    }
+  },
+  "unverified": {
+    "reason": "not_captured",
+    "detail": "Written from the Hacker News API documentation and the live endpoint's own shape, with no recording committed yet. The Record workflow replays `examples/*.request.json` through a client generated from this spec and fills in the responses."
+  },
+  "notes": [
+    "The body is a bare JSON number, not an object. A recording of it is a single integer, and the value moves every few seconds: an example records the id at one moment, and the mock replays that."
+  ]
+}

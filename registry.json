@@ -19,6 +19,26 @@
         "reason": "Recorded in the source project against a real token. api.github.com answers these reads unauthenticated, but at 60 requests an hour per runner IP, so a credential-free re-record from CI is not dependable."
       }
     },
+    "hacker-news": {
+      "description": "The Hacker News API: items, users, the ranked story lists and the live-update feed, read from the Firebase database behind the site.",
+      "upstream": "https://github.com/HackerNews/API",
+      "transports": [
+        "http"
+      ],
+      "source": "https://github.com/truewire-dev/registry/tree/main/specs/hacker-news",
+      "license": "CC0-1.0",
+      "endpoints": 5,
+      "endpoints_with_examples": 0,
+      "endpoints_unverified": 5,
+      "status": "unrecorded",
+      "path": "specs/hacker-news",
+      "recording": {
+        "recordable": true,
+        "hosts": {
+          "": "https://hacker-news.firebaseio.com"
+        }
+      }
+    },
     "kraken": {
       "description": "Kraken Spot: REST, WebSocket v2 streams and WebSocket trading RPC.",
       "upstream": "https://docs.kraken.com/api-reference/",

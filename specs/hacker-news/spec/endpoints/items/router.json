@@ -1,0 +1,5 @@
+{
+  "description": "Items: stories, comments, polls, poll options and jobs, all under one id space and one endpoint.",
+  "upstream": "https://github.com/HackerNews/API#items",
+  "core": "default"
+}

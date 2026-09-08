@@ -1,0 +1,6 @@
+{
+  "description": "The Ask HN page, a shorter list",
+  "request": {
+    "feed": "askstories"
+  }
+}

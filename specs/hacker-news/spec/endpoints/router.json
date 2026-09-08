@@ -1,0 +1,5 @@
+{
+  "description": "The Hacker News API: every item, user, ranked story list and live update, read straight out of the Firebase database that backs the site. Public, unauthenticated, read-only.",
+  "upstream": "https://github.com/HackerNews/API",
+  "core": "root"
+}

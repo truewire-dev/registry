@@ -1,0 +1,5 @@
+{
+  "description": "Live data: the largest item id yet assigned, and the items and profiles that changed most recently. What a poller reads to keep a mirror current.",
+  "upstream": "https://github.com/HackerNews/API#live-data",
+  "core": "default"
+}

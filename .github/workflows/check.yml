@@ -16,11 +16,30 @@ jobs:
           uv venv --python 3.12 .venv
           uv pip install --python .venv/bin/python truewire
       - name: Index matches the tree
+        # Counts, status and the README table, all read off the tree. A spec whose
+        # endpoints neither hold a recording nor declare `unverified` fails here, naming
+        # the gate below it would have failed.
         run: .venv/bin/python scripts/check_index.py
       - name: Check every spec
+        # `standards` runs `check` and `examples --require-verified` and adds the four
+        # spec-only rules a project without a `[python]` package can still be held to.
         run: |
           for spec in specs/*/; do
             echo "== $spec"
             .venv/bin/truewire check --project "$spec"
-            .venv/bin/truewire examples --require-verified --project "$spec"
+            .venv/bin/truewire standards --project "$spec" \
+              --only check,examples,duplicate-schemas,secret-placeholders,router-coverage
           done
+
+  recorded:
+    # The strict half, kept separate so it can never be quietly satisfied by a declaration.
+    # `examples --require-verified` excuses an endpoint that declares `unverified`, which
+    # is right -- a call needing a credential this repository does not hold will never be
+    # recorded here -- but it means a spec can pass the gate with no evidence at all. This
+    # job fails a spec that claims `recorded`, and reports, without failing, every spec
+    # still waiting on a recording run. Those are listed in the README as `unrecorded`.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Recording status
+        run: python scripts/recording_status.py

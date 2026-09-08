@@ -1,0 +1,104 @@
+name: Record
+
+# Record a registry spec's examples against the live API and open a pull request with the
+# result. Manual: Actions > Record > Run workflow. A runner has the network an authoring
+# environment usually does not, which is the whole reason this is a workflow and not a
+# review instruction.
+#
+# What it can record: a spec whose `registry.json` entry says `recording.recordable: true`,
+# which by rule means public and credential-free. Nothing here reads a secret, and none is
+# available to it: no `secrets` context is referenced anywhere below. A spec that needs a
+# key is recorded in its own source project, against a real credential, by whoever holds
+# one; its entry says so in `recording.reason` and this workflow skips it.
+#
+# Needs "Allow GitHub Actions to create and approve pull requests" enabled under
+# Settings > Actions > General.
+on:
+  workflow_dispatch:
+    inputs:
+      spec:
+        description: 'One spec name from registry.json; blank records every recordable spec.'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  # Through the environment, never interpolated into a shell command: the input is free
+  # text. `scripts/record.py` refuses a name that is not in registry.json.
+  SPEC: ${{ inputs.spec }}
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+      - name: Install truewire
+        # Pinned: a recording run rewrites committed evidence, so which version wrote it
+        # is part of the record. `capture` drops an endpoint's now-false `unverified`
+        # declaration itself as of 0.7.0, which is why nothing here does it afterwards.
+        run: |
+          uv venv --python 3.12 .venv
+          uv pip install --python .venv/bin/python 'truewire==0.7.0'
+
+      - name: Record
+        # One throwaway client per spec, generated from the spec itself plus the base URLs
+        # in registry.json, then every `examples/<id>.request.json` replayed through it
+        # with `truewire capture`. The recordings are copied back into specs/, and the
+        # counts in registry.json and the README table are refreshed from the tree.
+        run: |
+          if [ -n "$SPEC" ]; then
+            .venv/bin/python scripts/record.py --spec "$SPEC"
+          else
+            .venv/bin/python scripts/record.py
+          fi
+
+      - name: Gates on the recordings
+        # The same gates every pull request runs, now over the recordings. `check` replays
+        # each one against its endpoint's response schema, so a spec that disagrees with
+        # what the API actually sent fails here rather than reaching a caller.
+        run: |
+          .venv/bin/python scripts/check_index.py
+          : > coverage.txt
+          for spec in specs/*/; do
+            echo "== $spec"
+            .venv/bin/truewire check --project "$spec"
+            .venv/bin/truewire standards --project "$spec" \
+              --only check,examples,duplicate-schemas,secret-placeholders,router-coverage
+            echo "== $spec" >> coverage.txt
+            .venv/bin/truewire examples --project "$spec" >> coverage.txt
+          done
+
+      - name: Open a pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          BRANCH: record/${{ github.run_id }}
+        run: |
+          if git diff --quiet -- specs registry.json README.md; then
+            echo "Recordings unchanged; nothing to open."
+            exit 0
+          fi
+          scope="${SPEC:-every recordable spec}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add specs registry.json README.md
+          git commit -m "Record examples for $scope" \
+            -m "Recorded by the Record workflow ($RUN_URL) through a client generated from the spec itself."
+          git push origin "$BRANCH"
+          {
+            echo "Recorded by the [Record workflow]($RUN_URL): \`scripts/record.py\` generated a throwaway client from each spec and replayed its request halves with \`truewire capture\`."
+            echo
+            echo "Scope: \`$scope\`. Every changed endpoint keeps the request half it already had and gains the response the API sent; an endpoint that gained one no longer declares why it had none. \`registry.json\` and the README table are refreshed from the tree, so a spec that is now fully recorded moves to status \`recorded\` here."
+            echo
+            echo "Read the recordings before merging: they are whatever the API served, and they are what every caller of this spec will replay."
+            echo
+            echo '```'
+            cat coverage.txt
+            echo '```'
+          } > body.md
+          gh pr create --title "Record examples for $scope" --body-file body.md --base main --head "$BRANCH"

@@ -5,7 +5,9 @@ forecasts, geocoding and elevation. Free for non-commercial use, no key.
 
 - Upstream docs: https://open-meteo.com/en/docs
 - Endpoints: 7 (7 with recorded examples)
-- Source project (core, generated client, tests): https://github.com/truewire-dev/open-meteo
+- Source: this directory. The spec and its recordings were written for a standalone client
+  project that was never published -- Open-Meteo has a good official client, so the spec
+  serves the registry rather than a repository of its own.
 - License: CC0-1.0 (spec files and recorded examples)
 
 Use it: `truewire import registry open-meteo` inside a Truewire project, or copy `spec/` and

@@ -84,7 +84,7 @@
       "transports": [
         "http"
       ],
-      "source": "https://github.com/truewire-dev/open-meteo",
+      "source": "https://github.com/truewire-dev/registry/tree/main/specs/open-meteo",
       "license": "CC0-1.0",
       "endpoints": 7,
       "endpoints_with_examples": 7,

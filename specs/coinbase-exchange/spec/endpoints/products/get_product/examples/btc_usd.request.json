@@ -1,0 +1,6 @@
+{
+  "description": "The BTC-USD pair and its increments",
+  "request": {
+    "product_id": "BTC-USD"
+  }
+}

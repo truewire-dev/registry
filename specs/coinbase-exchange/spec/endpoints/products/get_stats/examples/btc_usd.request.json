@@ -1,0 +1,6 @@
+{
+  "description": "Trailing figures for BTC-USD",
+  "request": {
+    "product_id": "BTC-USD"
+  }
+}

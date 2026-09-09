@@ -1,0 +1,5 @@
+{
+  "description": "One product (a trading pair) and everything the exchange publishes about it.",
+  "upstream": "https://docs.cdp.coinbase.com/exchange/reference/exchangerestapi_getproducts",
+  "core": "default"
+}

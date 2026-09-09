@@ -1,0 +1,5 @@
+{
+  "description": "Coinbase Exchange market data: the traded products, their order books and tickers, the trade tape, and OHLC candles. No credentials -- this is the public half of the API, and the signed half is not specced here.",
+  "upstream": "https://docs.cdp.coinbase.com/exchange/reference",
+  "core": "root"
+}

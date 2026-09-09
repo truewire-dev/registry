@@ -1,0 +1,6 @@
+{
+  "description": "The top of the BTC-USD book",
+  "request": {
+    "product_id": "BTC-USD"
+  }
+}

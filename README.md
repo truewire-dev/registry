@@ -42,6 +42,7 @@ repository and the spec is the whole of it.
 
 | Name | Endpoints | Recorded | Transports | Status |
 | --- | --- | --- | --- | --- |
+| `coinbase-exchange` | 6 | 6 | http | recorded |
 | `github` | 6 | 6 | http | recorded |
 | `hacker-news` | 5 | 5 | http | recorded |
 | `kraken` | 75 | 62 | http, ws | partial |

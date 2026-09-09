@@ -1,0 +1,79 @@
+{
+  "docs": "https://docs.cdp.coinbase.com/exchange/reference/exchangerestapi_getproductticker",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/products/{product_id}/ticker",
+    "method": "GET",
+    "description": "The last trade and the current best bid and ask for one product. This is the cheapest \"what is it worth right now\" call in the API.",
+    "request": {
+      "title": "GetTickerRequest",
+      "type": "object",
+      "description": "Which product.",
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "description": "Product id, such as `BTC-USD`. `products.list_products` returns it as `id`."
+        }
+      },
+      "required": [
+        "product_id"
+      ]
+    },
+    "response": {
+      "title": "Ticker",
+      "type": "object",
+      "description": "The top of the book, plus the last fill.",
+      "properties": {
+        "trade_id": {
+          "type": "integer",
+          "description": "Id of the last fill."
+        },
+        "price": {
+          "type": "string",
+          "format": "decimal-string",
+          "description": "Price of the last fill."
+        },
+        "size": {
+          "type": "string",
+          "format": "decimal-string",
+          "description": "Size of the last fill."
+        },
+        "bid": {
+          "type": "string",
+          "format": "decimal-string",
+          "description": "Best bid."
+        },
+        "ask": {
+          "type": "string",
+          "format": "decimal-string",
+          "description": "Best ask."
+        },
+        "volume": {
+          "type": "string",
+          "format": "decimal-string",
+          "description": "Trailing 24-hour base-currency volume."
+        },
+        "time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the last fill happened."
+        }
+      },
+      "required": [
+        "trade_id",
+        "price",
+        "size",
+        "bid",
+        "ask",
+        "volume",
+        "time"
+      ]
+    }
+  }
+}

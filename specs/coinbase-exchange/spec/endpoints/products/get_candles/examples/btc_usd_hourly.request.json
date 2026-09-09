@@ -1,0 +1,9 @@
+{
+  "description": "Six hourly BTC-USD candles from a fixed day",
+  "request": {
+    "product_id": "BTC-USD",
+    "granularity": 3600,
+    "start": "2026-09-01T00:00:00Z",
+    "end": "2026-09-01T05:00:00Z"
+  }
+}

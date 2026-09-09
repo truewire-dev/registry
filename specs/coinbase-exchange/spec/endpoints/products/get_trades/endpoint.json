@@ -1,0 +1,71 @@
+{
+  "docs": "https://docs.cdp.coinbase.com/exchange/reference/exchangerestapi_getproducttrades",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/products/{product_id}/trades",
+    "method": "GET",
+    "description": "The trade tape for one product, newest first. Walked backwards in time by the id of the last row of the previous page.",
+    "request": {
+      "title": "GetTradesRequest",
+      "type": "object",
+      "description": "Which product, and where to resume.",
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "description": "Product id, such as `BTC-USD`. `products.list_products` returns it as `id`."
+        },
+        "after": {
+          "type": "integer",
+          "description": "Return trades older than this `trade_id`. Confusingly named: `after` means later in the walk, which is earlier in time, because the tape is served newest first. Omit for the newest page."
+        },
+        "before": {
+          "type": "integer",
+          "description": "Return trades newer than this `trade_id`. The other direction, for catching up rather than backfilling."
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Trades per page. Range [1, 1000]; defaults to 1000.",
+          "minimum": 1,
+          "maximum": 1000,
+          "default": 1000
+        }
+      },
+      "required": [
+        "product_id"
+      ]
+    },
+    "response": {
+      "title": "Trades",
+      "type": "array",
+      "description": "One page of the tape, newest first. A bare array, so the payload is itself the collection the walk ends on.",
+      "items": {
+        "$ref": "Trade",
+        "description": "One fill."
+      }
+    }
+  },
+  "pagination": {
+    "strategy": "seek",
+    "cursor": {
+      "parameter": "after",
+      "from": "[-1].trade_id"
+    },
+    "size": {
+      "parameter": "limit"
+    },
+    "done": {
+      "kind": "empty"
+    }
+  },
+  "notes": [
+    "The first recorded, tested use of `seek` pagination in this registry. The cursor is a genuine per-row id -- `trade_id` is unique and monotonic per product -- so no `overlap` is declared and the plain shape applies: the next request carries the `trade_id` of the last row of this one, and the walk ends on an empty page.",
+    "`done.rows` is omitted because the payload is itself the collection: the response is a bare array, not an object wrapping one.",
+    "Verified against the live API before it was declared, rather than read off the documentation: a page of three ending at `1090665550` is followed, with `after=1090665550`, by `[1090665549, 1090665548, 1090665547]`."
+  ]
+}

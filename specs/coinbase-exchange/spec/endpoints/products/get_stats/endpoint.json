@@ -1,0 +1,73 @@
+{
+  "docs": "https://docs.cdp.coinbase.com/exchange/reference/exchangerestapi_getproductstats",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/products/{product_id}/stats",
+    "method": "GET",
+    "description": "Trailing 24-hour and 30-day figures for one product.",
+    "request": {
+      "title": "GetStatsRequest",
+      "type": "object",
+      "description": "Which product.",
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "description": "Product id, such as `BTC-USD`. `products.list_products` returns it as `id`."
+        }
+      },
+      "required": [
+        "product_id"
+      ]
+    },
+    "response": {
+      "title": "Stats",
+      "type": "object",
+      "description": "The trailing window. Every figure is a decimal string.",
+      "properties": {
+        "open": {
+          "type": "string",
+          "format": "decimal-string",
+          "description": "Price 24 hours ago."
+        },
+        "high": {
+          "type": "string",
+          "format": "decimal-string",
+          "description": "Highest price in the last 24 hours."
+        },
+        "low": {
+          "type": "string",
+          "format": "decimal-string",
+          "description": "Lowest price in the last 24 hours."
+        },
+        "last": {
+          "type": "string",
+          "format": "decimal-string",
+          "description": "Most recent price."
+        },
+        "volume": {
+          "type": "string",
+          "format": "decimal-string",
+          "description": "Base-currency volume over the last 24 hours."
+        },
+        "volume_30day": {
+          "type": "string",
+          "format": "decimal-string",
+          "description": "Base-currency volume over the last 30 days."
+        }
+      },
+      "required": [
+        "open",
+        "high",
+        "low",
+        "last",
+        "volume"
+      ]
+    }
+  }
+}

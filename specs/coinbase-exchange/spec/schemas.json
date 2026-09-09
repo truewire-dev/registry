@@ -1,0 +1,155 @@
+{
+  "Product": {
+    "title": "Product",
+    "type": "object",
+    "description": "One traded pair, and the increments an order on it has to respect.",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Product id, such as `BTC-USD`. This is what every other endpoint here takes."
+      },
+      "base_currency": {
+        "type": "string",
+        "description": "What is being bought and sold, such as `BTC`."
+      },
+      "quote_currency": {
+        "type": "string",
+        "description": "What it is priced in, such as `USD`."
+      },
+      "display_name": {
+        "type": "string",
+        "description": "Human-readable name, usually `<base>-<quote>`."
+      },
+      "quote_increment": {
+        "type": "string",
+        "format": "decimal-string",
+        "description": "Smallest price movement. Prices are strings on the wire and decimals here: a price is money, and money through a float is a bug waiting for a rounding."
+      },
+      "base_increment": {
+        "type": "string",
+        "format": "decimal-string",
+        "description": "Smallest order size."
+      },
+      "min_market_funds": {
+        "type": "string",
+        "format": "decimal-string",
+        "description": "Smallest quote-currency amount a market order may spend."
+      },
+      "status": {
+        "type": "string",
+        "enum": ["online", "offline", "internal", "delisted"],
+        "description": "Whether the product is trading."
+      },
+      "status_message": {
+        "type": "string",
+        "description": "Why, when the status is not `online`. Empty otherwise."
+      },
+      "margin_enabled": {
+        "type": "boolean",
+        "description": "Whether margin trading is available on this product."
+      },
+      "post_only": {
+        "type": "boolean",
+        "description": "Only maker orders are accepted right now."
+      },
+      "limit_only": {
+        "type": "boolean",
+        "description": "Only limit orders are accepted right now."
+      },
+      "cancel_only": {
+        "type": "boolean",
+        "description": "Only cancels are accepted right now."
+      },
+      "trading_disabled": {
+        "type": "boolean",
+        "description": "Trading is halted on this product."
+      },
+      "fx_stablecoin": {
+        "type": "boolean",
+        "description": "Whether this is a stablecoin-to-fiat pair, which is priced differently."
+      },
+      "auction_mode": {
+        "type": "boolean",
+        "description": "Whether the product is currently in an auction rather than continuous trading."
+      },
+      "max_slippage_percentage": {
+        "type": "string",
+        "format": "decimal-string",
+        "description": "Largest slippage a market order will be filled through."
+      }
+    },
+    "required": ["id", "base_currency", "quote_currency", "quote_increment", "base_increment", "status"]
+  },
+  "Trade": {
+    "title": "Trade",
+    "type": "object",
+    "description": "One fill on the tape.",
+    "properties": {
+      "trade_id": {
+        "type": "integer",
+        "description": "Monotonically increasing id, per product. Newest first, and the cursor the walk pages by."
+      },
+      "side": {
+        "type": "string",
+        "enum": ["buy", "sell"],
+        "description": "Side of the *maker* order, which is the opposite of the taker's. A `sell` here is a taker buying into a resting sell."
+      },
+      "size": {
+        "type": "string",
+        "format": "decimal-string",
+        "description": "Amount filled, in the base currency."
+      },
+      "price": {
+        "type": "string",
+        "format": "decimal-string",
+        "description": "Price filled at, in the quote currency."
+      },
+      "time": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the fill happened."
+      }
+    },
+    "required": ["trade_id", "side", "size", "price", "time"]
+  },
+  "Candle": {
+    "title": "Candle",
+    "type": "array",
+    "description": "One OHLC bucket, as a fixed six-column row rather than an object. The order is the exchange's own and is not the usual one: low and high come before open and close.",
+    "minItems": 6,
+    "maxItems": 6,
+    "prefixItems": [
+      {
+        "title": "time",
+        "type": "integer",
+        "format": "epoch-seconds",
+        "description": "Start of the bucket."
+      },
+      {
+        "title": "low",
+        "type": "number",
+        "description": "Lowest price in the bucket. A bare number here, unlike every price elsewhere in this API, which is a decimal string."
+      },
+      {
+        "title": "high",
+        "type": "number",
+        "description": "Highest price in the bucket."
+      },
+      {
+        "title": "open",
+        "type": "number",
+        "description": "First price in the bucket."
+      },
+      {
+        "title": "close",
+        "type": "number",
+        "description": "Last price in the bucket."
+      },
+      {
+        "title": "volume",
+        "type": "number",
+        "description": "Base-currency volume traded in the bucket."
+      }
+    ]
+  }
+}

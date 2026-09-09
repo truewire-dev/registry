@@ -1,0 +1,34 @@
+{
+  "docs": "https://docs.cdp.coinbase.com/exchange/reference/exchangerestapi_getproducts",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/products",
+    "method": "GET",
+    "description": "Every product the exchange lists, trading or not. The response is a bare array, not an object wrapping one, so there is nothing to unwrap and no envelope to declare.",
+    "request": {
+      "title": "ListProductsRequest",
+      "type": "object",
+      "description": "Takes nothing.",
+      "properties": {},
+      "required": []
+    },
+    "response": {
+      "title": "Products",
+      "type": "array",
+      "description": "Every listed product, in no documented order.",
+      "items": {
+        "$ref": "Product",
+        "description": "One product."
+      }
+    }
+  },
+  "notes": [
+    "No `pagination` block: the endpoint takes no cursor and no limit, and answers with the whole list in one response. Around 800 products and a third of a megabyte, which is worth knowing before calling it in a loop."
+  ]
+}

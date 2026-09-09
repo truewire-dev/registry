@@ -1,0 +1,13 @@
+[project]
+name = "coinbase_exchange"
+
+[spec]
+dir = "spec"
+
+[cores.default]
+# Every endpoint here is market data, which Coinbase Exchange serves to anyone: no key, no
+# passphrase, no signature. The private half of the API (accounts, orders, transfers) is
+# HMAC-signed and is deliberately not specced here -- a spec nothing in this repository can
+# record is a spec nobody can trust. So `public` is the whole of what an endpoint tells a
+# core (authoring rule 9).
+meta = { type = "object", properties = { public = { type = "boolean" } }, additionalProperties = false }

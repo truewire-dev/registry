@@ -1,0 +1,79 @@
+{
+  "docs": "https://docs.cdp.coinbase.com/exchange/reference/exchangerestapi_getproductcandles",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/products/{product_id}/candles",
+    "method": "GET",
+    "description": "OHLC candles for one product over a time range, newest first. Each candle is a fixed six-column row rather than an object.",
+    "request": {
+      "title": "GetCandlesRequest",
+      "type": "object",
+      "description": "Which product, over which span, at which resolution.",
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "description": "Product id, such as `BTC-USD`. `products.list_products` returns it as `id`."
+        },
+        "granularity": {
+          "type": "integer",
+          "enum": [
+            60,
+            300,
+            900,
+            3600,
+            21600,
+            86400
+          ],
+          "description": "Bucket width in seconds: one minute, five, fifteen, one hour, six hours, one day. Any other value is rejected."
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Start of the span, inclusive."
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time",
+          "description": "End of the span, inclusive."
+        }
+      },
+      "required": [
+        "product_id"
+      ]
+    },
+    "response": {
+      "title": "Candles",
+      "type": "array",
+      "description": "The candles in the span, newest first.",
+      "items": {
+        "$ref": "Candle",
+        "description": "One bucket."
+      }
+    }
+  },
+  "pagination": {
+    "strategy": "window",
+    "bound": {
+      "start": "start",
+      "end": "end"
+    },
+    "order": "descending",
+    "step": {
+      "unit": "s",
+      "size": 1
+    },
+    "done": {
+      "kind": "empty"
+    }
+  },
+  "notes": [
+    "Both bounds are inclusive, so the step is one second: a window whose `end` equalled the previous window's `start` would re-read the candle on the boundary. Confirmed against the live API -- `start=00:00Z&end=05:00Z` at hourly granularity returns six candles, not five.",
+    "No `size` is declared, and so no truncation guard is generated, because the endpoint has no page-size parameter to declare. The exchange caps a response at 300 candles and says nothing about the ones it withheld, which is exactly the loss the guard exists to catch; `pagination.size` can only name a request parameter, and there is none here. See the registry README's note on this spec."
+  ]
+}

@@ -1,6 +1,26 @@
 {
   "schema": 1,
   "specs": {
+    "coinbase-exchange": {
+      "description": "Coinbase Exchange market data: the traded products, their tickers and trailing stats, the trade tape walked by cursor, and OHLC candles walked by time window. The public half of the API; the signed half is not specced.",
+      "upstream": "https://docs.cdp.coinbase.com/exchange/reference",
+      "transports": [
+        "http"
+      ],
+      "source": "https://github.com/truewire-dev/registry/tree/main/specs/coinbase-exchange",
+      "license": "CC0-1.0",
+      "endpoints": 6,
+      "endpoints_with_examples": 6,
+      "endpoints_unverified": 0,
+      "status": "recorded",
+      "path": "specs/coinbase-exchange",
+      "recording": {
+        "recordable": true,
+        "hosts": {
+          "": "https://api.exchange.coinbase.com"
+        }
+      }
+    },
     "github": {
       "description": "GitHub REST API, repository-scoped: repositories, commits, tags, releases, issues.",
       "upstream": "https://docs.github.com/en/rest",

@@ -44,18 +44,27 @@ trust, so it is left out rather than written from documentation.
   means *later in the walk*, which is *earlier in time*, because the tape is served newest
   first. The description says so, because that is where a caller will read it.
 
-## What it could not declare
+## The cap, measured
 
-`products.get_candles` declares no `size`, so no truncation guard is generated for its
-walk. The exchange caps a response at 300 candles and says nothing about the ones it
-withheld — precisely the silent loss the guard exists to catch — but `pagination.size` can
-only name a *request parameter*, and this endpoint has none: the cap is a documented
-property of the endpoint, not something a caller sets.
+`products.get_candles` declares no `size`, so no truncation guard is generated for its walk.
+That would be a real hole if the exchange truncated an over-wide range silently — the loss
+Part 3 of the pagination series is about. It does not. It refuses:
 
-That is a real gap rather than an authoring choice, and it is the second half of a pattern:
-`stations.get_observations` in the weather.gov showcase *does* have a `limit`, and its
-declared default is the only reason its guard exists at all. An endpoint with a documented
-row cap and no size parameter cannot arm one today.
+```
+$ …/candles?granularity=3600&start=2026-01-01T00:00:00Z&end=2026-01-13T12:00:00Z   # 301 candles
+[ … 301 rows … ]
+$ …/candles?granularity=3600&start=2026-01-01T00:00:00Z&end=2026-01-13T13:00:00Z   # 302 candles
+{"message": "granularity too small for the requested time range.
+             Count of aggregations requested exceeds 300"}
+```
+
+So a caller asking for too much finds out loudly, and there is nothing for a guard to catch.
+
+This note previously said the opposite — that the exchange caps at 300 and says nothing —
+which was assumed from the documented limit rather than measured. It is left corrected
+rather than quietly rewritten, because the correction is the interesting part: whether an
+endpoint truncates or refuses decides whether its client needs a guard at all, and the
+documentation says neither.
 
 ## Recordings
 

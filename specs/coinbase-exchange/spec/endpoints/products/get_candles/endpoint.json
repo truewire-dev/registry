@@ -74,6 +74,7 @@
   },
   "notes": [
     "Both bounds are inclusive, so the step is one second: a window whose `end` equalled the previous window's `start` would re-read the candle on the boundary. Confirmed against the live API -- `start=00:00Z&end=05:00Z` at hourly granularity returns six candles, not five.",
-    "No `size` is declared, and so no truncation guard is generated, because the endpoint has no page-size parameter to declare. The exchange caps a response at 300 candles and says nothing about the ones it withheld, which is exactly the loss the guard exists to catch; `pagination.size` can only name a request parameter, and there is none here. See the registry README's note on this spec."
+    "No `size` is declared, and so no truncation guard is generated, because the endpoint has no page-size parameter to declare. That is safe here, and only because of how the exchange behaves: it *refuses* an over-wide range rather than truncating it. Measured at hourly granularity from a fixed historical start -- a 300-hour range (301 candles) is answered in full; 301 hours (302 candles) is HTTP 400, `granularity too small for the requested time range. Count of aggregations requested exceeds 300`. A caller that asks for too much finds out loudly, which is what the guard would otherwise have to do.",
+    "An earlier version of this note claimed the exchange silently caps a response at 300 candles. That was assumed rather than measured, and it is wrong. Kept here because the correction is the point: the difference between an API that truncates and one that refuses decides whether a client needs a guard at all, and it is not in the documentation either way."
   ]
 }

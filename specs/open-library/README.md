@@ -5,6 +5,7 @@ work and author records behind the results. Read access is public and needs no k
 
 - Upstream docs: https://openlibrary.org/developers/api
 - Endpoints: 3 (3 with recorded examples)
+- Coverage: not surveyed against the vendor's documentation; this spec may be a sample
 - Source project (core, generated client, tests): authored in this repository; there is no
   separate project behind it
 - License: CC0-1.0 (spec files and recorded examples)

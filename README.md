@@ -40,21 +40,24 @@ repository and the spec is the whole of it.
 
 ## Specs
 
-| Name | Endpoints | Recorded | Transports | Status |
-| --- | --- | --- | --- | --- |
-| `bitstamp` | 5 | 5 | http | recorded |
-| `coinbase-exchange` | 6 | 6 | http | recorded |
-| `github` | 6 | 6 | http | recorded |
-| `hacker-news` | 5 | 5 | http | recorded |
-| `kraken` | 75 | 62 | http, ws | partial |
-| `open-library` | 3 | 3 | http | recorded |
-| `open-meteo` | 7 | 7 | http | recorded |
-| `usgs-earthquakes` | 3 | 3 | http | recorded |
+| Name | Endpoints | Recorded | Coverage | Transports | Status |
+| --- | --- | --- | --- | --- | --- |
+| `bitstamp` | 5 | 5 | ? | http | recorded |
+| `coinbase-exchange` | 6 | 6 | ? | http | recorded |
+| `github` | 6 | 6 | ? | http | recorded |
+| `hacker-news` | 5 | 5 | ? | http | recorded |
+| `kraken` | 75 | 62 | ? | http, ws | partial |
+| `open-library` | 3 | 3 | ? | http | recorded |
+| `open-meteo` | 7 | 7 | ? | http | recorded |
+| `usgs-earthquakes` | 3 | 3 | ? | http | recorded |
 
 (`registry.json` is the source of truth; CI fails if this table's numbers drift from it.)
 
 **Recorded** counts endpoints holding a complete example pair -- a request beside the response
-the API actually sent. **Status** is derived from the tree, never asserted:
+the API actually sent. **Coverage** is endpoints in the spec against endpoints in the vendor's
+own documentation, declared per spec as `documented` with a source and a survey date; `?`
+means nobody has surveyed the docs yet, so the spec may be a sample of the API rather than
+the API. A spec is complete when the two numbers match. **Status** is derived from the tree, never asserted:
 
 | Status | What it means |
 | --- | --- |

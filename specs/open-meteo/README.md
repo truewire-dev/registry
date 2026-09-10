@@ -5,6 +5,7 @@ forecasts, geocoding and elevation. Free for non-commercial use, no key.
 
 - Upstream docs: https://open-meteo.com/en/docs
 - Endpoints: 7 (7 with recorded examples)
+- Coverage: not surveyed against the vendor's documentation; this spec may be a sample
 - Source: this directory. The spec and its recordings were written for a standalone client
   project that was never published -- Open-Meteo has a good official client, so the spec
   serves the registry rather than a repository of its own.

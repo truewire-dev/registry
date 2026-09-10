@@ -42,7 +42,7 @@ repository and the spec is the whole of it.
 
 | Name | Endpoints | Recorded | Transports | Status |
 | --- | --- | --- | --- | --- |
-| `bitstamp` | 5 | 0 | http | unrecorded |
+| `bitstamp` | 5 | 5 | http | recorded |
 | `coinbase-exchange` | 6 | 6 | http | recorded |
 | `github` | 6 | 6 | http | recorded |
 | `hacker-news` | 5 | 5 | http | recorded |

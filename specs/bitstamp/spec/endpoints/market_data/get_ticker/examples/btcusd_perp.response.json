@@ -1,0 +1,22 @@
+{
+  "status": 200,
+  "payload": {
+    "timestamp": "1789025154",
+    "open": "78308",
+    "high": "79773",
+    "low": "77778",
+    "last": "78102",
+    "volume": "72.30556",
+    "vwap": "78669",
+    "bid": "78046",
+    "ask": "78047",
+    "side": "0",
+    "open_24": "79253",
+    "percent_change_24": "-1.45",
+    "market_type": "PERPETUAL",
+    "index_price": "78053.7555",
+    "mark_price": "78065.13244403",
+    "open_interest": "71.79681",
+    "open_interest_value": "5604827.4817088575443"
+  }
+}

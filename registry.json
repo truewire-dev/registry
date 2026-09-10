@@ -10,9 +10,9 @@
       "source": "https://github.com/truewire-dev/registry/tree/main/specs/bitstamp",
       "license": "CC0-1.0",
       "endpoints": 5,
-      "endpoints_with_examples": 0,
-      "endpoints_unverified": 5,
-      "status": "unrecorded",
+      "endpoints_with_examples": 5,
+      "endpoints_unverified": 0,
+      "status": "recorded",
       "path": "specs/bitstamp",
       "recording": {
         "recordable": true,

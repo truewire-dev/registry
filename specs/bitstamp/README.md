@@ -5,7 +5,7 @@ books, the trade tape and OHLC candles -- for both the spot markets and the USD-
 perpetual futures Bitstamp added alongside them. Public, no key.
 
 - Upstream docs: https://www.bitstamp.net/api/
-- Endpoints: 5 (0 with recorded examples)
+- Endpoints: 5 (5 with recorded examples)
 - Source project (core, generated client, tests): authored in this repository; there is no
   separate project behind it
 - License: CC0-1.0 (spec files and recorded examples)

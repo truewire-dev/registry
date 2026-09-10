@@ -3,10 +3,6 @@
   "meta": {
     "public": true
   },
-  "unverified": {
-    "reason": "not_captured",
-    "detail": "Not yet recorded; awaiting a run of the Record workflow against the live, public, credential-free API."
-  },
   "spec": {
     "kind": "rpc",
     "transports": [

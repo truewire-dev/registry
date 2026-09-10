@@ -1,0 +1,242 @@
+{
+  "docs": "https://www.bitstamp.net/api/#ticker",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/api/v2/ticker/{market_symbol}/",
+    "method": "GET",
+    "description": "24-hour ticker for one market: last trade, best bid/ask, and the trailing high/low/volume.",
+    "request": {
+      "title": "GetTickerRequest",
+      "description": "The market to fetch a ticker for.",
+      "type": "object",
+      "required": [
+        "market_symbol"
+      ],
+      "properties": {
+        "market_symbol": {
+          "type": "string",
+          "description": "Market symbol, from `market_data.list_markets`, such as `btcusd` or `btcusd-perp`."
+        }
+      }
+    },
+    "response": {
+      "description": "The ticker. `market_type` tells `SPOT` and `PERPETUAL` apart: a perpetual ticker carries the mark/index price and open interest a spot ticker has none of.",
+      "anyOf": [
+        {
+          "title": "SpotTicker",
+          "description": "Ticker for a spot trading pair.",
+          "type": "object",
+          "properties": {
+            "timestamp": {
+              "type": "string",
+              "format": "epoch-seconds",
+              "description": "When this ticker was computed."
+            },
+            "open": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Price at the start of the current UTC day."
+            },
+            "high": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Highest trade price in the trailing 24 hours."
+            },
+            "low": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Lowest trade price in the trailing 24 hours."
+            },
+            "last": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Most recent trade price."
+            },
+            "volume": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Trade volume in the trailing 24 hours, in the base currency."
+            },
+            "vwap": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Volume-weighted average price over the trailing 24 hours."
+            },
+            "bid": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Best bid price."
+            },
+            "ask": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Best ask price."
+            },
+            "side": {
+              "type": "string",
+              "description": "Side of the most recent trade: `0` buy, `1` sell.",
+              "enum": [
+                "0",
+                "1"
+              ]
+            },
+            "open_24": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Price exactly 24 hours ago."
+            },
+            "percent_change_24": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Percent change of `last` versus `open_24`. Negative for a fall."
+            },
+            "market_type": {
+              "type": "string",
+              "description": "Discriminates this variant.",
+              "enum": [
+                "SPOT"
+              ]
+            }
+          },
+          "required": [
+            "timestamp",
+            "open",
+            "high",
+            "low",
+            "last",
+            "volume",
+            "vwap",
+            "bid",
+            "ask",
+            "side",
+            "open_24",
+            "percent_change_24",
+            "market_type"
+          ]
+        },
+        {
+          "title": "PerpetualTicker",
+          "description": "Ticker for a USD-margined perpetual futures contract.",
+          "type": "object",
+          "properties": {
+            "timestamp": {
+              "type": "string",
+              "format": "epoch-seconds",
+              "description": "When this ticker was computed."
+            },
+            "open": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Price at the start of the current UTC day."
+            },
+            "high": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Highest trade price in the trailing 24 hours."
+            },
+            "low": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Lowest trade price in the trailing 24 hours."
+            },
+            "last": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Most recent trade price."
+            },
+            "volume": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Trade volume in the trailing 24 hours, in the base currency."
+            },
+            "vwap": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Volume-weighted average price over the trailing 24 hours."
+            },
+            "bid": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Best bid price."
+            },
+            "ask": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Best ask price."
+            },
+            "side": {
+              "type": "string",
+              "description": "Side of the most recent trade: `0` buy, `1` sell.",
+              "enum": [
+                "0",
+                "1"
+              ]
+            },
+            "open_24": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Price exactly 24 hours ago."
+            },
+            "percent_change_24": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Percent change of `last` versus `open_24`. Negative for a fall."
+            },
+            "market_type": {
+              "type": "string",
+              "description": "Discriminates this variant.",
+              "enum": [
+                "PERPETUAL"
+              ]
+            },
+            "index_price": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Reference index price the contract is marked against."
+            },
+            "mark_price": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Mark price used for margining and liquidation."
+            },
+            "open_interest": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Total open contracts, in the base currency."
+            },
+            "open_interest_value": {
+              "type": "string",
+              "format": "decimal-string",
+              "description": "Total open interest, valued in the counter currency at the mark price."
+            }
+          },
+          "required": [
+            "timestamp",
+            "open",
+            "high",
+            "low",
+            "last",
+            "volume",
+            "vwap",
+            "bid",
+            "ask",
+            "side",
+            "open_24",
+            "percent_change_24",
+            "market_type",
+            "index_price",
+            "mark_price",
+            "open_interest",
+            "open_interest_value"
+          ]
+        }
+      ]
+    }
+  }
+}

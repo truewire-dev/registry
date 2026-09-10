@@ -1,0 +1,77 @@
+{
+  "docs": "https://www.bitstamp.net/api/#order-book",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/api/v2/order_book/{market_symbol}/",
+    "method": "GET",
+    "description": "Current order book for one market: every bid and ask level, best price first.",
+    "request": {
+      "title": "GetOrderBookRequest",
+      "description": "The market to fetch an order book for, and how to group its levels.",
+      "type": "object",
+      "required": [
+        "market_symbol"
+      ],
+      "properties": {
+        "market_symbol": {
+          "type": "string",
+          "description": "Market symbol, from `market_data.list_markets`, such as `btcusd`."
+        },
+        "group": {
+          "type": "integer",
+          "description": "Whether orders at the same price are merged into one level: `0` lists every order separately, `1` groups them into one level per price. Defaults to `1`.",
+          "enum": [
+            0,
+            1
+          ]
+        }
+      }
+    },
+    "response": {
+      "title": "OrderBook",
+      "type": "object",
+      "description": "Order book snapshot, bids and asks each sorted best price first.",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "epoch-seconds",
+          "description": "When this snapshot was taken, to the second."
+        },
+        "microtimestamp": {
+          "type": "string",
+          "format": "epoch-micros",
+          "description": "When this snapshot was taken, to the microsecond."
+        },
+        "bids": {
+          "type": "array",
+          "description": "Buy levels, highest price first.",
+          "items": {
+            "$ref": "OrderBookLevel"
+          }
+        },
+        "asks": {
+          "type": "array",
+          "description": "Sell levels, lowest price first.",
+          "items": {
+            "$ref": "OrderBookLevel"
+          }
+        }
+      },
+      "required": [
+        "timestamp",
+        "microtimestamp",
+        "bids",
+        "asks"
+      ]
+    }
+  },
+  "notes": [
+    "Bitstamp documents a third `group` value, `2`, which prepends each level's order id and returns three-element rows (`[price, amount, order_id]`) instead of the two-element `OrderBookLevel` this schema declares -- verified live. The request enum stops at `1` deliberately: declaring `2` would need a row shape this endpoint's schema cannot express without breaking `0`/`1`, and a caller who passes it anyway gets a response that fails validation against this schema rather than one this spec silently mis-describes."
+  ]
+}

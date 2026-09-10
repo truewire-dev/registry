@@ -1,0 +1,6 @@
+{
+  "description": "Ticker for the BTC/USD-PERP perpetual contract, the other side of the discriminated union.",
+  "request": {
+    "market_symbol": "btcusd-perp"
+  }
+}

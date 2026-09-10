@@ -1,0 +1,6 @@
+{
+  "description": "Ticker for the BTC/USD spot market.",
+  "request": {
+    "market_symbol": "btcusd"
+  }
+}

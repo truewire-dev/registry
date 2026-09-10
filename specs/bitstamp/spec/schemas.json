@@ -1,0 +1,23 @@
+{
+  "OrderBookLevel": {
+    "title": "OrderBookLevel",
+    "type": "array",
+    "description": "One order book level: `[price, amount]`.",
+    "minItems": 2,
+    "maxItems": 2,
+    "prefixItems": [
+      {
+        "title": "price",
+        "type": "string",
+        "format": "decimal-string",
+        "description": "Price at this level."
+      },
+      {
+        "title": "amount",
+        "type": "string",
+        "format": "decimal-string",
+        "description": "Total order amount at this level."
+      }
+    ]
+  }
+}

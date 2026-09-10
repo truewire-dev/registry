@@ -1,0 +1,258 @@
+{
+  "docs": "https://www.bitstamp.net/api/#markets",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/api/v2/markets/",
+    "method": "GET",
+    "description": "List every market Bitstamp trades, spot and perpetual alike, with its trading status and order-size limits.",
+    "request": {
+      "title": "ListMarketsRequest",
+      "description": "No parameters; always returns every market.",
+      "type": "object",
+      "properties": {}
+    },
+    "response": {
+      "title": "MarketList",
+      "type": "array",
+      "description": "Every market, in no documented order.",
+      "items": {
+        "description": "One market. `market_type` tells `SPOT` and `PERPETUAL` apart: a perpetual market carries the contract terms a spot pair has none of.",
+        "anyOf": [
+          {
+            "title": "SpotMarket",
+            "description": "A spot trading pair.",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Display name, such as `BTC/USD`."
+              },
+              "market_symbol": {
+                "type": "string",
+                "description": "Symbol used in every other endpoint's URL, such as `btcusd`."
+              },
+              "base_currency": {
+                "type": "string",
+                "description": "Currency being bought or sold, such as `BTC`."
+              },
+              "base_decimals": {
+                "type": "integer",
+                "description": "Decimal places Bitstamp accepts for an order amount in `base_currency`."
+              },
+              "counter_currency": {
+                "type": "string",
+                "description": "Currency prices are quoted in, such as `USD`."
+              },
+              "counter_decimals": {
+                "type": "integer",
+                "description": "Decimal places Bitstamp accepts for an order price in `counter_currency`."
+              },
+              "minimum_order_value": {
+                "type": "string",
+                "format": "decimal-string",
+                "description": "Smallest order value Bitstamp accepts, in `counter_currency`."
+              },
+              "trading": {
+                "type": "string",
+                "description": "Whether regular trading is open on this market.",
+                "enum": [
+                  "Enabled",
+                  "Disabled"
+                ]
+              },
+              "instant_order_counter_decimals": {
+                "type": "integer",
+                "description": "Decimal places Bitstamp accepts for an instant/market order's value in `counter_currency`."
+              },
+              "instant_and_market_orders": {
+                "type": "string",
+                "description": "Whether instant and market orders are open on this market.",
+                "enum": [
+                  "Enabled",
+                  "Disabled"
+                ]
+              },
+              "description": {
+                "type": "string",
+                "description": "Human-readable market description, such as `Bitcoin / U.S. dollar`."
+              },
+              "market_type": {
+                "type": "string",
+                "description": "Discriminates this variant.",
+                "enum": [
+                  "SPOT"
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "market_symbol",
+              "base_currency",
+              "base_decimals",
+              "counter_currency",
+              "counter_decimals",
+              "minimum_order_value",
+              "trading",
+              "instant_order_counter_decimals",
+              "instant_and_market_orders",
+              "description",
+              "market_type"
+            ]
+          },
+          {
+            "title": "PerpetualMarket",
+            "description": "A USD-margined perpetual futures contract.",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Display name, such as `BTC/USD-PERP`."
+              },
+              "market_symbol": {
+                "type": "string",
+                "description": "Symbol used in every other endpoint's URL, such as `btcusd-perp`."
+              },
+              "base_currency": {
+                "type": "string",
+                "description": "Asset the contract tracks, such as `BTC`."
+              },
+              "base_decimals": {
+                "type": "integer",
+                "description": "Decimal places Bitstamp accepts for a contract amount in `base_currency`."
+              },
+              "counter_currency": {
+                "type": "string",
+                "description": "Currency the contract is margined and quoted in, such as `USD`."
+              },
+              "counter_decimals": {
+                "type": "integer",
+                "description": "Decimal places Bitstamp accepts for a price in `counter_currency`."
+              },
+              "minimum_order_value": {
+                "type": "string",
+                "format": "decimal-string",
+                "description": "Smallest order value Bitstamp accepts, in `counter_currency`."
+              },
+              "maximum_order_value": {
+                "type": "string",
+                "format": "decimal-string",
+                "description": "Largest order value Bitstamp accepts, in `counter_currency`."
+              },
+              "minimum_order_amount": {
+                "type": "string",
+                "format": "decimal-string",
+                "description": "Smallest order amount Bitstamp accepts, in `base_currency`."
+              },
+              "maximum_order_amount": {
+                "type": "string",
+                "format": "decimal-string",
+                "description": "Largest order amount Bitstamp accepts, in `base_currency`."
+              },
+              "trading": {
+                "type": "string",
+                "description": "Whether regular trading is open on this contract.",
+                "enum": [
+                  "Enabled",
+                  "Disabled"
+                ]
+              },
+              "instant_order_counter_decimals": {
+                "type": "integer",
+                "description": "Decimal places Bitstamp accepts for an instant/market order's value in `counter_currency`."
+              },
+              "instant_and_market_orders": {
+                "type": "string",
+                "description": "Whether instant and market orders are open on this contract.",
+                "enum": [
+                  "Enabled",
+                  "Disabled"
+                ]
+              },
+              "description": {
+                "type": "string",
+                "description": "Human-readable contract description, such as `Bitcoin / U.S. dollar Perpetual`."
+              },
+              "market_type": {
+                "type": "string",
+                "description": "Discriminates this variant.",
+                "enum": [
+                  "PERPETUAL"
+                ]
+              },
+              "underlying_asset": {
+                "type": "string",
+                "description": "Reference price index the contract is marked against, such as `Kaiko BTC Benchmark Reference Rate`."
+              },
+              "payoff_type": {
+                "type": "string",
+                "description": "How the contract's payoff is denominated. Every contract observed today is `Linear`; left a plain string since Bitstamp does not publish this as a closed set."
+              },
+              "contract_size": {
+                "type": "string",
+                "format": "decimal-string",
+                "description": "Units of `base_currency` one contract represents."
+              },
+              "max_leverage": {
+                "type": "string",
+                "format": "decimal-string",
+                "description": "Maximum leverage Bitstamp allows on this contract."
+              },
+              "isin": {
+                "type": "string",
+                "description": "International Securities Identification Number assigned to the contract."
+              },
+              "asset_class": {
+                "type": "string",
+                "description": "Asset class the underlying belongs to.",
+                "enum": [
+                  "CRYPTO",
+                  "FX",
+                  "COMMODITIES",
+                  "ETF"
+                ]
+              },
+              "has_market_hours": {
+                "type": "boolean",
+                "description": "Whether the contract only trades during set market hours, rather than continuously."
+              }
+            },
+            "required": [
+              "name",
+              "market_symbol",
+              "base_currency",
+              "base_decimals",
+              "counter_currency",
+              "counter_decimals",
+              "minimum_order_value",
+              "maximum_order_value",
+              "minimum_order_amount",
+              "maximum_order_amount",
+              "trading",
+              "instant_order_counter_decimals",
+              "instant_and_market_orders",
+              "description",
+              "market_type",
+              "underlying_asset",
+              "payoff_type",
+              "contract_size",
+              "max_leverage",
+              "isin",
+              "asset_class",
+              "has_market_hours"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "notes": [
+    "`asset_class` is enumerated from every value the 20 live perpetual markets carry today (`CRYPTO`, `FX`, `COMMODITIES`, `ETF`) rather than from prose Bitstamp publishes as a closed set; a new asset class would be a fifth value this enum does not yet know.",
+    "The older `GET /api/v2/trading-pairs-info/` this replaces returned `minimum_order` as a currency-suffixed string (`\"10.00000 USD\"`) rather than a bare decimal; that endpoint is not specced here."
+  ]
+}

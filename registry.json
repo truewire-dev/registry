@@ -1,6 +1,26 @@
 {
   "schema": 1,
   "specs": {
+    "bitstamp": {
+      "description": "Bitstamp public v2 market data: every spot and perpetual market, tickers, order books, the trade tape and OHLC candles.",
+      "upstream": "https://www.bitstamp.net/api/",
+      "transports": [
+        "http"
+      ],
+      "source": "https://github.com/truewire-dev/registry/tree/main/specs/bitstamp",
+      "license": "CC0-1.0",
+      "endpoints": 5,
+      "endpoints_with_examples": 5,
+      "endpoints_unverified": 0,
+      "status": "recorded",
+      "path": "specs/bitstamp",
+      "recording": {
+        "recordable": true,
+        "hosts": {
+          "": "https://www.bitstamp.net"
+        }
+      }
+    },
     "coinbase-exchange": {
       "description": "Coinbase Exchange market data: the traded products, their tickers and trailing stats, the trade tape walked by cursor, and OHLC candles walked by time window. The public half of the API; the signed half is not specced.",
       "upstream": "https://docs.cdp.coinbase.com/exchange/reference",

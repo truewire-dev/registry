@@ -1,0 +1,148 @@
+{
+  "docs": "https://www.bitstamp.net/api/#ohlc-data",
+  "meta": {
+    "public": true
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/api/v2/ohlc/{market_symbol}/",
+    "method": "GET",
+    "description": "OHLC candles for one market, ending at `end` (or now, if omitted) and going back `limit` candles of `step` seconds each.",
+    "request": {
+      "title": "GetOhlcRequest",
+      "description": "The market, candle width and how many candles to return.",
+      "type": "object",
+      "required": [
+        "market_symbol",
+        "step",
+        "limit"
+      ],
+      "properties": {
+        "market_symbol": {
+          "type": "string",
+          "description": "Market symbol, from `market_data.list_markets`, such as `btcusd`."
+        },
+        "step": {
+          "type": "integer",
+          "description": "Candle width, in seconds.",
+          "enum": [
+            60,
+            180,
+            300,
+            900,
+            1800,
+            3600,
+            7200,
+            14400,
+            21600,
+            43200,
+            86400,
+            259200
+          ]
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Number of candles to return.",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "start": {
+          "type": "integer",
+          "format": "epoch-seconds",
+          "description": "Documented as the start of the range. Verified live to have no effect on the response when `end` is also sent -- see notes."
+        },
+        "end": {
+          "type": "integer",
+          "format": "epoch-seconds",
+          "description": "End of the range the newest returned candle is aligned to. Defaults to now."
+        },
+        "exclude_current_candle": {
+          "type": "string",
+          "format": "boolean-string",
+          "description": "Whether to omit the current, still-open candle from the response. Defaults to `false`."
+        }
+      }
+    },
+    "response": {
+      "title": "OhlcResponse",
+      "type": "object",
+      "description": "Wire frame; `pair` is kept alongside the candles rather than unwrapped, since it confirms which market answered.",
+      "properties": {
+        "data": {
+          "title": "OhlcData",
+          "type": "object",
+          "description": "The candles and the market they belong to.",
+          "properties": {
+            "pair": {
+              "type": "string",
+              "description": "Display name of the market these candles are for, such as `BTC/USD`."
+            },
+            "ohlc": {
+              "type": "array",
+              "description": "Candles, oldest first.",
+              "items": {
+                "title": "Candle",
+                "type": "object",
+                "description": "One OHLC candle.",
+                "properties": {
+                  "timestamp": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "Candle open time."
+                  },
+                  "open": {
+                    "type": "string",
+                    "format": "decimal-string",
+                    "description": "Opening price."
+                  },
+                  "high": {
+                    "type": "string",
+                    "format": "decimal-string",
+                    "description": "Highest price during the candle."
+                  },
+                  "low": {
+                    "type": "string",
+                    "format": "decimal-string",
+                    "description": "Lowest price during the candle."
+                  },
+                  "close": {
+                    "type": "string",
+                    "format": "decimal-string",
+                    "description": "Closing price."
+                  },
+                  "volume": {
+                    "type": "string",
+                    "format": "decimal-string",
+                    "description": "Traded volume during the candle, in the base currency."
+                  }
+                },
+                "required": [
+                  "timestamp",
+                  "open",
+                  "high",
+                  "low",
+                  "close",
+                  "volume"
+                ]
+              }
+            }
+          },
+          "required": [
+            "pair",
+            "ohlc"
+          ]
+        }
+      },
+      "required": [
+        "data"
+      ]
+    }
+  },
+  "notes": [
+    "No `pagination` block, despite `start`/`end`/`limit` looking like a `window` walk's parameters: called directly (a fixed `step`, an old, hour-aligned `start`/`end` pair, well clear of the live edge, per the authoring guide's own probing advice), `start` made no difference to the response at all -- with `end` and `limit` both set, the API returns exactly `limit` candles ending at `end` regardless of what `start` says, including when `start` is inside that span. A generated `window` walk advances `start` between requests; against this endpoint that walk would never converge; the request schema keeps `start` because the API accepts and documents it, and this note exists so nobody adds the block from the parameter names alone.",
+    "A market's `market_type` decides which key the frame uses for its name: this schema and every recorded example cover the `pair` key a spot market returns; a perpetual market (`btcusd-perp`) returns `market` instead of `pair` at the same position, and is out of scope here."
+  ]
+}

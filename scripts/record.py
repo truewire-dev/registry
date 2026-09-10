@@ -171,7 +171,7 @@ def refresh_index(names: list[str]) -> None:
   disagreement, which is what a forgotten count would be.
   """
   sys.path.insert(0, str(ROOT / 'scripts'))
-  from check_index import survey
+  from check_index import coverage_cell, coverage_line, survey
 
   index_file = ROOT / 'registry.json'
   index = json.loads(index_file.read_text())
@@ -182,17 +182,20 @@ def refresh_index(names: list[str]) -> None:
     entry.update(survey(name))
     row = (
       f'| `{name}` | {entry["endpoints"]} | {entry["endpoints_with_examples"]} '
-      f'| {", ".join(entry["transports"])} | {entry["status"]} |'
+      f'| {coverage_cell(entry)} | {", ".join(entry["transports"])} | {entry["status"]} |'
     )
     readme = re.sub(rf'^\| `{re.escape(name)}` \|.*$', row, readme, count=1, flags=re.M)
     # The spec's own README states the same two numbers in prose, on one fixed line.
     spec_readme = ROOT / entry['path'] / 'README.md'
     if spec_readme.is_file():
-      spec_readme.write_text(re.sub(
+      text = re.sub(
         r'^- Endpoints: \d+ \(\d+ with recorded examples\)$',
         f'- Endpoints: {entry["endpoints"]} ({entry["endpoints_with_examples"]} with recorded examples)',
         spec_readme.read_text(), count=1, flags=re.M,
-      ))
+      )
+      # The coverage line carries the endpoint count too, so it is rewritten with it.
+      text = re.sub(r'^- Coverage: .*$', coverage_line(entry), text, count=1, flags=re.M)
+      spec_readme.write_text(text)
   index_file.write_text(json.dumps(index, indent=2) + '\n')
   readme_file.write_text(readme)
 

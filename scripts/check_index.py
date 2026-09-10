@@ -14,6 +14,11 @@ Counts come from the tree, never from prose:
 - `status` is derived: `recorded` (every endpoint recorded), `unrecorded` (something is
   waiting for a recording run, reason `not_captured`), `partial` (the rest are declared
   unverified for a reason recording cannot fix -- credentials, state, safety).
+- `documented`, when present, is the survey of the vendor's own documentation:
+  `{"endpoints": M, "source": url, "surveyed": "YYYY-MM-DD"}`. It is the one number the tree
+  cannot produce, so it is declared, dated and sourced; the README shows it as
+  "N of M documented endpoints". A spec without it says so in the same place. A spec is
+  complete when N == M; anything less is a sample, and the README must say which.
 """
 import json
 import re
@@ -35,6 +40,23 @@ def paired(endpoint: Path) -> bool:
   return any(f'{i}.response.json' in names for i in http) or any(
     f'{i}.reply.json' in names or f'{i}.messages.json' in names for i in ws
   )
+
+
+def coverage_line(entry: dict) -> str:
+  """The per-spec README line that keeps a sample from passing for a complete spec."""
+  documented = entry.get('documented')
+  if not documented:
+    return "- Coverage: not surveyed against the vendor's documentation; this spec may be a sample"
+  return (
+    f'- Coverage: {entry["endpoints"]} of {documented["endpoints"]} documented endpoints '
+    f'(surveyed {documented["surveyed"]})'
+  )
+
+
+def coverage_cell(entry: dict) -> str:
+  """The root README table's coverage column."""
+  documented = entry.get('documented')
+  return f'{entry["endpoints"]} of {documented["endpoints"]}' if documented else '?'
 
 
 def survey(name: str) -> dict:
@@ -117,6 +139,18 @@ def main() -> int:
           f'`envelope.payload` ({", ".join(enveloped[:3])}), which the recorder\'s '
           'pass-through core cannot unwrap'
         )
+    documented = entry.get('documented')
+    if documented is not None:
+      keys = {'endpoints', 'source', 'surveyed'}
+      if set(documented) != keys or not isinstance(documented['endpoints'], int):
+        problems.append(f'{name}: `documented` must be {{endpoints: int, source, surveyed}}')
+      elif not re.fullmatch(r'\d{4}-\d{2}-\d{2}', str(documented['surveyed'])):
+        problems.append(f'{name}: `documented.surveyed` must be a YYYY-MM-DD date')
+      elif documented['endpoints'] < entry['endpoints']:
+        problems.append(
+          f'{name}: the spec has {entry["endpoints"]} endpoints but `documented.endpoints` says '
+          f'{documented["endpoints"]}; the survey is stale'
+        )
     if entry.get('status') == 'unrecorded' and not recording.get('recordable'):
       problems.append(
         f'{name}: endpoints declare `unverified` with reason `not_captured`, which claims a '
@@ -131,12 +165,17 @@ def main() -> int:
       problems.append(f'{name}: no specs/{name}/README.md')
       continue
     line = f'- Endpoints: {entry["endpoints"]} ({entry["endpoints_with_examples"]} with recorded examples)'
-    if line not in spec_readme.read_text():
+    text = spec_readme.read_text()
+    if line not in text:
       problems.append(f'specs/{name}/README.md: does not carry the line {line!r}')
+    if coverage_line(entry) not in text:
+      problems.append(f'specs/{name}/README.md: does not carry the line {coverage_line(entry)!r}')
 
   readme = (ROOT / 'README.md').read_text()
   for name, entry in index['specs'].items():
-    row = re.search(rf'^\| `{re.escape(name)}` \| (\d+) \| (\d+) \| ([^|]+) \| ([^|]+) \|', readme, re.M)
+    row = re.search(
+      rf'^\| `{re.escape(name)}` \| (\d+) \| (\d+) \| ([^|]+) \| ([^|]+) \| ([^|]+) \|', readme, re.M
+    )
     if row is None:
       problems.append(f'{name}: no row in README.md')
       continue
@@ -145,10 +184,12 @@ def main() -> int:
         f'{name}: README row says {row.group(1)}/{row.group(2)}, '
         f'index says {entry["endpoints"]}/{entry["endpoints_with_examples"]}'
       )
-    if row.group(3).strip() != ', '.join(entry['transports']):
-      problems.append(f'{name}: README transports {row.group(3).strip()!r} != {entry["transports"]}')
-    if row.group(4).strip() != entry['status']:
-      problems.append(f'{name}: README status {row.group(4).strip()!r} != {entry["status"]!r}')
+    if row.group(3).strip() != coverage_cell(entry):
+      problems.append(f'{name}: README coverage {row.group(3).strip()!r} != {coverage_cell(entry)!r}')
+    if row.group(4).strip() != ', '.join(entry['transports']):
+      problems.append(f'{name}: README transports {row.group(4).strip()!r} != {entry["transports"]}')
+    if row.group(5).strip() != entry['status']:
+      problems.append(f'{name}: README status {row.group(5).strip()!r} != {entry["status"]!r}')
   for problem in problems:
     print(problem)
   return 1 if problems else 0

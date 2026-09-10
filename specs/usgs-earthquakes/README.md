@@ -5,6 +5,7 @@ querying the ANSS Comprehensive Catalog. Public, no key.
 
 - Upstream docs: https://earthquake.usgs.gov/fdsnws/event/1/
 - Endpoints: 3 (3 with recorded examples)
+- Coverage: not surveyed against the vendor's documentation; this spec may be a sample
 - Source project (core, generated client, tests): authored in this repository; there is no
   separate project behind it
 - License: CC0-1.0 (spec files and recorded examples)

@@ -6,6 +6,7 @@ perpetual futures Bitstamp added alongside them. Public, no key.
 
 - Upstream docs: https://www.bitstamp.net/api/
 - Endpoints: 5 (5 with recorded examples)
+- Coverage: not surveyed against the vendor's documentation; this spec may be a sample
 - Source project (core, generated client, tests): authored in this repository; there is no
   separate project behind it
 - License: CC0-1.0 (spec files and recorded examples)

@@ -5,6 +5,7 @@ trade tape, and OHLC candles. Public, no key, no passphrase, no signature.
 
 - Upstream docs: https://docs.cdp.coinbase.com/exchange/reference
 - Endpoints: 6 (6 with recorded examples)
+- Coverage: not surveyed against the vendor's documentation; this spec may be a sample
 - Source project (core, generated client, tests): authored in this repository; there is no
   separate project behind it
 - License: CC0-1.0 (spec files and recorded examples)

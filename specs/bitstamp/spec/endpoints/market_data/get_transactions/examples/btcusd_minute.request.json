@@ -1,0 +1,7 @@
+{
+  "description": "Trades on BTC/USD in the last minute.",
+  "request": {
+    "market_symbol": "btcusd",
+    "time": "minute"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "description": "Public market data: the tradable market list, per-market tickers, order books, recent trades and OHLC candles.",
+  "upstream": "https://www.bitstamp.net/api/",
+  "core": "default"
+}

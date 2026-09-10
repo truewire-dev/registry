@@ -1,0 +1,5 @@
+{
+  "description": "Bitstamp: public v2 REST market data. Tradable markets, tickers, order books, the trade tape and OHLC candles, for both the spot markets and the USD-margined perpetual futures Bitstamp added alongside them. No key.",
+  "upstream": "https://www.bitstamp.net/api/",
+  "core": "root"
+}

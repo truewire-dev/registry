@@ -1,0 +1,91 @@
+{
+  "docs": "https://www.bitstamp.net/api/#transactions",
+  "meta": {
+    "public": true
+  },
+  "unverified": {
+    "reason": "not_captured",
+    "detail": "Not yet recorded; awaiting a run of the Record workflow against the live, public, credential-free API."
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/api/v2/transactions/{market_symbol}/",
+    "method": "GET",
+    "description": "Recent trades on one market, newest first.",
+    "request": {
+      "title": "GetTransactionsRequest",
+      "description": "The market to fetch trades for, and how far back to look.",
+      "type": "object",
+      "required": [
+        "market_symbol"
+      ],
+      "properties": {
+        "market_symbol": {
+          "type": "string",
+          "description": "Market symbol, from `market_data.list_markets`, such as `btcusd`."
+        },
+        "time": {
+          "type": "string",
+          "description": "How far back to return trades from. Defaults to `hour`.",
+          "enum": [
+            "minute",
+            "hour",
+            "day"
+          ]
+        }
+      }
+    },
+    "response": {
+      "title": "TransactionList",
+      "type": "array",
+      "description": "Trades in the requested window, newest first.",
+      "items": {
+        "title": "Transaction",
+        "type": "object",
+        "description": "One executed trade.",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "epoch-seconds",
+            "description": "When the trade executed."
+          },
+          "tid": {
+            "type": "string",
+            "description": "Trade id. Monotonically increasing but never used arithmetically, so it stays a plain string."
+          },
+          "price": {
+            "type": "string",
+            "format": "decimal-string",
+            "description": "Trade price."
+          },
+          "amount": {
+            "type": "string",
+            "format": "decimal-string",
+            "description": "Trade amount, in the base currency."
+          },
+          "type": {
+            "type": "string",
+            "description": "Side of the taker order: `0` buy, `1` sell.",
+            "enum": [
+              "0",
+              "1"
+            ]
+          }
+        },
+        "required": [
+          "date",
+          "tid",
+          "price",
+          "amount",
+          "type"
+        ]
+      }
+    }
+  },
+  "notes": [
+    "No pagination block: `time` only widens or narrows the trailing window this call returns in one shot -- there is no cursor or offset to walk pages with, and no documented way to reach a trade older than the window allows."
+  ]
+}

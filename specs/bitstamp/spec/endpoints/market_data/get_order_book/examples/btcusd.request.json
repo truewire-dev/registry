@@ -1,0 +1,7 @@
+{
+  "description": "Grouped order book for BTC/USD, the default grouping.",
+  "request": {
+    "market_symbol": "btcusd",
+    "group": 1
+  }
+}

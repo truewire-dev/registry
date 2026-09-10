@@ -1,0 +1,9 @@
+{
+  "description": "Five hourly BTC/USD candles, excluding the current, still-open one.",
+  "request": {
+    "market_symbol": "btcusd",
+    "step": 3600,
+    "limit": 5,
+    "exclude_current_candle": "true"
+  }
+}

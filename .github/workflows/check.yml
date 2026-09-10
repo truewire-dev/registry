@@ -20,6 +20,14 @@ jobs:
         # endpoints neither hold a recording nor declare `unverified` fails here, naming
         # the gate below it would have failed.
         run: .venv/bin/python scripts/check_index.py
+      - name: The recorder writes what the checker checks
+        # `record.py` rewrites the index and both README levels after a recording run;
+        # `check_index.py` holds them to the tree. Refreshing every spec through the
+        # recorder's own code on a clean tree must change nothing, or the two have drifted
+        # and the next recording run would fail at its gate (2026-09-10, run 34477798994).
+        run: |
+          .venv/bin/python -c "import json, sys; sys.path.insert(0, 'scripts'); import record; record.refresh_index(sorted(json.load(open('registry.json'))['specs']))"
+          git diff --exit-code
       - name: Check every spec
         # `standards` runs `check` and `examples --require-verified` and adds the four
         # spec-only rules a project without a `[python]` package can still be held to.
